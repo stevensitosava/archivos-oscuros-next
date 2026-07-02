@@ -45,3 +45,6 @@ next-env.d.ts
 _ebook-files/
 
 .vercel
+
+# Heavy source originals (app uses the optimized public/ copy)
+_original-assets/
