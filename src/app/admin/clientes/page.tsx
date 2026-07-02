@@ -31,9 +31,20 @@ export default async function AdminClientes() {
         >
           {customers.map((c) => (
             <tr key={c.userId}>
-              <Td className="max-w-[18rem]">
-                <span className="block truncate text-bone-100">{c.email ?? "—"}</span>
-                <span className="block truncate font-mono text-[0.72rem] text-ash-500">{c.userId}</span>
+              <Td className="max-w-[22rem]">
+                <div className="flex items-center gap-3">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-bone-100/12 bg-ink-800 text-[0.85rem] font-medium text-gold-300">
+                    {(c.displayName ?? c.email ?? "?").charAt(0).toUpperCase()}
+                  </span>
+                  <div className="min-w-0">
+                    <span className="block truncate text-bone-50">
+                      {c.displayName ?? c.email ?? "Cliente sin datos"}
+                    </span>
+                    <span className="block truncate font-mono text-[0.7rem] text-ash-500">
+                      {c.displayName && c.email ? c.email : c.userId}
+                    </span>
+                  </div>
+                </div>
               </Td>
               <Td className="text-right text-ash-300">{c.orders}</Td>
               <Td className="whitespace-nowrap text-right font-medium text-bone-50">{formatPrice(c.spentCents)}</Td>

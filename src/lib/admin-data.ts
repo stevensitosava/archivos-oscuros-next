@@ -102,7 +102,7 @@ export async function getAllCustomers(): Promise<AdminCustomer[]> {
   if (!sb) return [];
   const [{ data: profiles }, { data: orders }, { data: ents }] = await Promise.all([
     sb.from("profiles").select("id, email, display_name, created_at"),
-    sb.from("orders").select("user_id, total_cents, status"),
+    sb.from("orders").select("user_id, email, total_cents, status, created_at"),
     sb.from("entitlements").select("user_id, granted_at"),
   ]);
 
@@ -113,6 +113,17 @@ export async function getAllCustomers(): Promise<AdminCustomer[]> {
   for (const e of ents ?? []) ids.add(e.user_id as string);
 
   const profileOf = new Map((profiles ?? []).map((p) => [p.id as string, p]));
+
+  // Fallback email from the user's most recent order (covers buyers whose
+  // profile hasn't synced yet — orders always carry the checkout email).
+  const orderEmailOf = new Map<string, string>();
+  for (const o of [...(orders ?? [])].sort((a, b) =>
+    String(b.created_at ?? "").localeCompare(String(a.created_at ?? "")),
+  )) {
+    const uid = o.user_id as string | null;
+    const em = o.email as string | null;
+    if (uid && em && !orderEmailOf.has(uid)) orderEmailOf.set(uid, em);
+  }
 
   return [...ids]
     .map((id) => {
@@ -125,7 +136,7 @@ export async function getAllCustomers(): Promise<AdminCustomer[]> {
         null;
       return {
         userId: id,
-        email: (p?.email as string | null) ?? null,
+        email: (p?.email as string | null) ?? orderEmailOf.get(id) ?? null,
         displayName: (p?.display_name as string | null) ?? null,
         orders: userOrders.length,
         spentCents: userOrders.reduce((s, o) => s + ((o.total_cents as number) ?? 0), 0),
