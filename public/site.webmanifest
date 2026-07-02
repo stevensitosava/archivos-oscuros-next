@@ -1,0 +1,11 @@
+{
+  "name": "Archivos Oscuros",
+  "short_name": "Archivos Oscuros",
+  "description": "Librería digital de estoicismo, historia y filosofía de guerreros.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#010101",
+  "theme_color": "#010101",
+  "lang": "es",
+  "icons": [{ "src": "/sigil.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

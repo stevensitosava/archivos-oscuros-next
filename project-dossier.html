@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Archivos Oscuros · Project Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink-950:#010101; --ink-900:#080808; --ink-850:#0d0d0d; --ink-800:#131313; --ink-700:#1d1d1d; --ink-600:#2a2a2a;
+    --bone-50:#ffffff; --bone-100:#f4f4f5; --bone-200:#d8d8da; --bone-300:#b6b6ba;
+    --ash-400:#9a9a9f; --ash-500:#727277; --ash-600:#4c4c50;
+    --ember-700:#5c1a14; --ember-600:#8a261d; --ember-500:#b2342a; --ember-400:#d24a3f; --ember-300:#e3766c;
+    --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.05);
+    --emerald:#5fb98f;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--ink-950);color:var(--bone-200);
+    font-family:"Poppins",system-ui,sans-serif;font-weight:400;line-height:1.65;font-size:16px;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(125% 120% at 50% 20%,transparent 55%,rgba(0,0,0,.7) 100%);}
+  a{color:inherit;text-decoration:none}
+  .wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 28px}
+  h1,h2,h3,h4{color:var(--bone-50);font-weight:600;letter-spacing:-.02em;line-height:1.08;margin:0}
+  em{font-style:italic;color:var(--ember-400)}
+  .mono{font-variant-numeric:tabular-nums;font-family:"Poppins",monospace}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(1,1,1,.72);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px}
+  .brandmark{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:.02em;color:var(--bone-50);font-size:.95rem}
+  .sigil{width:30px;height:30px;border:1.5px solid var(--bone-100);border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.85rem;color:var(--bone-50)}
+  .brandmark .thin{color:var(--ash-400);font-weight:400}
+  .navlinks{display:flex;gap:22px;font-size:.72rem;text-transform:uppercase;letter-spacing:.16em;color:var(--ash-400)}
+  .navlinks a:hover{color:var(--bone-50)}
+  @media(max-width:820px){.navlinks{display:none}}
+
+  /* eyebrow */
+  .eyebrow{display:inline-flex;align-items:center;gap:12px;font-size:.7rem;text-transform:uppercase;letter-spacing:.28em;color:var(--ash-400);font-weight:400}
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--ember-500)}
+
+  section{padding:72px 0;border-bottom:1px solid var(--line-2)}
+  section:last-of-type{border-bottom:none}
+
+  /* hero */
+  .hero{padding-top:78px;padding-bottom:58px}
+  .hero h1{font-size:clamp(3rem,9vw,6.2rem);font-weight:800;letter-spacing:-.045em;margin:18px 0 0;text-transform:uppercase;line-height:.9}
+  .hero h1 .os{display:block;font-size:.42em;letter-spacing:.02em;color:var(--bone-100);font-weight:700}
+  .hero .lede{max-width:620px;margin-top:24px;font-size:1.12rem;color:var(--bone-300);line-height:1.6}
+  .pill{display:inline-flex;align-items:center;gap:9px;margin-top:26px;padding:9px 16px;border:1px solid var(--line);border-radius:999px;font-size:.82rem;color:var(--bone-200)}
+  .pill .dot{width:8px;height:8px;border-radius:50%;background:var(--emerald);box-shadow:0 0 10px var(--emerald)}
+  .pill a{color:var(--ember-300)}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:44px}
+  .stat{background:var(--ink-850);border:1px solid var(--line);border-radius:12px;padding:20px 18px}
+  .stat .n{font-size:2.1rem;font-weight:800;color:var(--bone-50);letter-spacing:-.03em;line-height:1}
+  .stat .l{margin-top:7px;font-size:.72rem;text-transform:uppercase;letter-spacing:.13em;color:var(--ash-400)}
+  @media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+  h2.title{font-size:clamp(1.8rem,3.5vw,2.6rem);margin-top:14px;font-weight:700}
+  .section-lede{max-width:640px;margin-top:14px;color:var(--ash-400)}
+
+  /* generic card grid */
+  .grid{display:grid;gap:16px}
+  .card{background:var(--ink-850);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .card h3{font-size:1.05rem;margin-bottom:6px}
+  .card p{margin:0;color:var(--ash-400);font-size:.9rem}
+
+  /* brand card */
+  .brandwrap{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;margin-top:38px}
+  @media(max-width:900px){.brandwrap{grid-template-columns:1fr}}
+  .idcard{background:linear-gradient(160deg,var(--ink-850),var(--ink-900));border:1px solid var(--line);border-radius:16px;padding:30px;position:relative;overflow:hidden}
+  .idcard .biglogo{display:flex;align-items:center;gap:16px}
+  .idcard .biglogo .sigil{width:52px;height:52px;font-size:1.3rem}
+  .idcard .biglogo .wm{font-size:1.5rem;font-weight:800;letter-spacing:.03em;color:var(--bone-50)}
+  .idcard .biglogo .wm span{color:var(--ash-400);font-weight:400}
+  .idcard .tagline{margin-top:22px;font-size:1.05rem;color:var(--bone-200);max-width:34ch}
+  .metrow{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+  .metrow div{font-size:.78rem;color:var(--ash-400)}
+  .metrow b{display:block;color:var(--bone-100);font-weight:600;font-size:.9rem;margin-top:2px}
+  .swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:22px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+  .sw{height:52px;display:flex;align-items:flex-end;padding:5px 6px;font-size:.54rem;color:rgba(255,255,255,.55);font-family:monospace}
+  .sw.dark{color:rgba(255,255,255,.4)}
+
+  .palette-note{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+  .type-demo{background:var(--ink-850);border:1px solid var(--line);border-radius:14px;padding:24px}
+  .type-demo .aa{font-size:3.2rem;font-weight:800;color:var(--bone-50);line-height:1}
+  .type-demo .weights{margin-top:14px;display:flex;flex-wrap:wrap;gap:4px 14px;color:var(--ash-400);font-size:.8rem}
+  .type-demo .weights span:nth-child(1){font-weight:300}.type-demo .weights span:nth-child(2){font-weight:400}
+  .type-demo .weights span:nth-child(3){font-weight:600}.type-demo .weights span:nth-child(4){font-weight:800}
+
+  /* covers */
+  .covers{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:30px}
+  @media(max-width:900px){.covers{grid-template-columns:repeat(3,1fr)}}
+  .cover{position:relative;aspect-ratio:2/3;border-radius:6px;overflow:hidden;background:var(--ink-700);box-shadow:0 18px 40px -20px rgba(0,0,0,.9);border:1px solid rgba(255,255,255,.06)}
+  .cover img{width:100%;height:100%;object-fit:cover;display:block}
+  .cover .cap{position:absolute;left:0;right:0;bottom:0;padding:16px 8px 7px;background:linear-gradient(transparent,rgba(1,1,1,.9));font-size:.62rem;color:var(--bone-100);font-weight:500}
+  .cover .price{position:absolute;top:6px;right:6px;background:rgba(1,1,1,.7);color:var(--bone-100);font-size:.58rem;padding:2px 6px;border-radius:4px;font-family:monospace}
+  .cover .price.free{color:var(--emerald)}
+
+  /* tech stack */
+  .stackgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:36px}
+  @media(max-width:900px){.stackgrid{grid-template-columns:repeat(2,1fr)}}
+  .tech{background:var(--ink-850);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .tech b{color:var(--bone-50);font-weight:600;font-size:.95rem}
+  .tech span{display:block;color:var(--ash-500);font-size:.76rem;margin-top:3px}
+
+  /* routes */
+  .routes{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:36px}
+  @media(max-width:820px){.routes{grid-template-columns:1fr}}
+  .rgroup{background:var(--ink-850);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+  .rgroup h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.16em;color:var(--ember-300);margin-bottom:14px;font-weight:500}
+  .rgroup ul{list-style:none;margin:0;padding:0}
+  .rgroup li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line-2);font-size:.82rem}
+  .rgroup li:last-child{border-bottom:none}
+  .rgroup code{font-family:monospace;color:var(--bone-100);font-size:.8rem}
+  .rgroup .tag{font-size:.62rem;color:var(--ash-500);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+  .tag.static{color:var(--emerald)} .tag.dyn{color:var(--ember-300)} .tag.gated{color:#e0b64a}
+
+  /* schema */
+  .schema{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+  @media(max-width:900px){.schema{grid-template-columns:1fr 1fr}}
+  @media(max-width:620px){.schema{grid-template-columns:1fr}}
+  .table{background:var(--ink-850);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .table .th{padding:11px 15px;background:var(--ink-800);border-bottom:1px solid var(--line);font-family:monospace;font-size:.85rem;color:var(--bone-50);display:flex;justify-content:space-between;align-items:center}
+  .table .th .pk{font-size:.55rem;color:var(--ash-500);text-transform:uppercase;letter-spacing:.1em}
+  .table ul{list-style:none;margin:0;padding:8px 0}
+  .table li{padding:4px 15px;font-family:monospace;font-size:.74rem;color:var(--ash-400);display:flex;justify-content:space-between}
+  .table li b{color:var(--bone-200);font-weight:500}
+  .badge{font-size:.55rem;padding:1px 5px;border-radius:3px;letter-spacing:.05em}
+  .badge.pk{background:rgba(210,74,63,.16);color:var(--ember-300)}
+  .badge.fk{background:rgba(95,185,143,.14);color:var(--emerald)}
+  .badge.uq{background:rgba(255,255,255,.08);color:var(--bone-300)}
+  .rel{margin-top:18px;background:var(--ink-850);border:1px solid var(--line);border-left:2px solid var(--ember-500);border-radius:10px;padding:16px 20px;font-size:.85rem;color:var(--ash-400)}
+  .rel code{font-family:monospace;color:var(--bone-100)}
+
+  /* timeline */
+  .timeline{margin-top:40px;position:relative;padding-left:34px}
+  .timeline::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--ember-500),var(--ember-700),transparent)}
+  .phase{position:relative;padding:0 0 28px}
+  .phase::before{content:"";position:absolute;left:-28px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--ember-500);box-shadow:0 0 0 4px var(--ink-950),0 0 12px var(--ember-500)}
+  .phase h3{font-size:1.12rem;display:flex;align-items:center;gap:10px}
+  .phase .num{font-family:monospace;font-size:.72rem;color:var(--ash-500)}
+  .phase p{margin:6px 0 0;color:var(--ash-400);font-size:.9rem;max-width:70ch}
+  .phase .chips{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-size:.66rem;padding:3px 9px;border:1px solid var(--line);border-radius:999px;color:var(--bone-300);background:var(--ink-850)}
+
+  /* security */
+  .seclayers{display:flex;flex-direction:column;gap:10px;margin-top:36px}
+  .layer{display:flex;align-items:center;gap:16px;background:var(--ink-850);border:1px solid var(--line);border-radius:12px;padding:15px 20px}
+  .layer .ic{width:34px;height:34px;flex:none;border-radius:9px;background:rgba(210,74,63,.12);display:grid;place-items:center}
+  .layer .ic svg{width:18px;height:18px;stroke:var(--ember-300)}
+  .layer b{color:var(--bone-50);font-weight:600;font-size:.95rem}
+  .layer span{color:var(--ash-400);font-size:.84rem}
+  .layer .rowtxt{display:flex;flex-direction:column}
+  .review-note{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .review-note .card b{color:var(--bone-50)}
+  .review-note .card .big{font-size:1.5rem;font-weight:800;color:var(--ember-300);display:block}
+
+  /* tests */
+  .testcols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:36px}
+  @media(max-width:820px){.testcols{grid-template-columns:1fr}}
+  .testcol{background:var(--ink-850);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+  .testcol h4{font-size:.95rem;color:var(--bone-50);display:flex;align-items:center;justify-content:space-between}
+  .testcol h4 .badge2{font-size:.66rem;color:var(--emerald);background:rgba(95,185,143,.12);padding:3px 9px;border-radius:999px;font-weight:500}
+  .testcol ul{list-style:none;margin:16px 0 0;padding:0}
+  .testcol li{padding:7px 0;border-bottom:1px solid var(--line-2);font-size:.85rem;color:var(--bone-200);display:flex;gap:10px}
+  .testcol li:last-child{border-bottom:none}
+  .testcol li::before{content:"✓";color:var(--emerald);font-weight:700}
+  .ci{margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:var(--ink-850);border:1px solid var(--line);border-radius:12px;padding:16px 20px;font-size:.85rem;color:var(--ash-400)}
+  .ci .step{display:inline-flex;align-items:center;gap:8px;color:var(--bone-100);font-family:monospace;font-size:.8rem}
+  .ci .arrow{color:var(--ash-600)}
+
+  /* deploy */
+  .deploybox{margin-top:34px;background:linear-gradient(160deg,var(--ink-850),var(--ink-900));border:1px solid var(--line);border-radius:16px;padding:34px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px}
+  .deploybox .u{font-size:1.05rem}
+  .deploybox .u a{color:var(--ember-300);font-weight:600}
+  .deploybox .u span{display:block;color:var(--ash-500);font-size:.8rem;margin-top:4px}
+  .deploybtn{padding:13px 26px;border-radius:999px;background:var(--bone-50);color:var(--ink-950);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.14em}
+
+  footer{padding:40px 0 60px;color:var(--ash-600);font-size:.78rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer b{color:var(--ash-400);font-weight:500}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brandmark"><span class="sigil">A</span> ARCHIVOS <span class="thin">OSCUROS</span></div>
+    <div class="navlinks">
+      <a href="#brand">Marca</a>
+      <a href="#stack">Stack</a>
+      <a href="#structure">Estructura</a>
+      <a href="#database">Base de datos</a>
+      <a href="#built">Construido</a>
+      <a href="#security">Seguridad</a>
+      <a href="#tests">Tests</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero wrap">
+  <p class="eyebrow">Project Dossier · Tienda de ebooks</p>
+  <h1>Archivos<span class="os">Oscuros</span></h1>
+  <p class="lede">Librería digital de estoicismo, historia y códigos de guerreros — construida como un
+    <em>producto de nivel sénior</em>: catálogo dirigido por base de datos, panel de administración,
+    pagos, seguridad endurecida y suite de tests. De un prototipo en Vite a una app Next.js 16 en producción.</p>
+  <span class="pill"><span class="dot"></span> En producción · <a href="https://archivos-oscuros-next.vercel.app" target="_blank" rel="noopener">archivos-oscuros-next.vercel.app</a></span>
+
+  <div class="stats">
+    <div class="stat"><div class="n">28</div><div class="l">Rutas</div></div>
+    <div class="stat"><div class="n">7</div><div class="l">Tablas BD</div></div>
+    <div class="stat"><div class="n">19</div><div class="l">Tests ✓</div></div>
+    <div class="stat"><div class="n">13+</div><div class="l">Capas de seguridad</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">Revisiones adversarias</div></div>
+  </div>
+</header>
+
+<!-- BRAND -->
+<section id="brand" class="wrap">
+  <p class="eyebrow">Identidad</p>
+  <h2 class="title">Brand card</h2>
+  <p class="section-lede">Estética cinematográfica minimal — casi monocroma, blanco hueso sobre negro puro,
+    con un único acento carmesí (ember) usado con moderación. Tipografía Poppins en todo el sitio.</p>
+
+  <div class="brandwrap">
+    <div class="idcard">
+      <div class="biglogo"><span class="sigil" style="width:52px;height:52px;font-size:1.3rem">A</span>
+        <span class="wm">ARCHIVOS <span>OSCUROS</span></span></div>
+      <p class="tagline">Estoicismo, historia y códigos de guerreros. Sabiduría dura para forjar el carácter.</p>
+      <div class="swatches">
+        <div class="sw" style="background:#010101">#010101</div>
+        <div class="sw" style="background:#131313">#131313</div>
+        <div class="sw" style="background:#2a2a2a">#2a2a2a</div>
+        <div class="sw dark" style="background:#9a9a9f;color:#111">#9a9a9f</div>
+        <div class="sw dark" style="background:#f4f4f5;color:#111">#f4f4f5</div>
+        <div class="sw" style="background:#d24a3f">#d24a3f</div>
+      </div>
+      <div class="metrow">
+        <div>Ink (negros)<b>#010101 → #2a2a2a</b></div>
+        <div>Bone (blancos)<b>#ffffff → #b6b6ba</b></div>
+        <div>Ash (grises)<b>#9a9a9f → #4c4c50</b></div>
+        <div>Ember (acento)<b>#b2342a / #d24a3f</b></div>
+      </div>
+    </div>
+
+    <div class="type-demo">
+      <div class="aa">Aa</div>
+      <div style="color:var(--bone-100);font-weight:600;margin-top:6px">Poppins</div>
+      <div class="weights"><span>Light 300</span><span>Regular 400</span><span>SemiBold 600</span><span>ExtraBold 800</span></div>
+      <div style="margin-top:20px;padding-top:18px;border-top:1px solid var(--line);color:var(--ash-400);font-size:.82rem">
+        Display en <b style="color:var(--bone-100)">800/900</b> con tracking cerrado (-0.04em). Cuerpo en 400.
+        Etiquetas eyebrow en mayúsculas con tracking abierto (0.28em) y barra ember.
+      </div>
+    </div>
+  </div>
+
+  <div class="covers">
+    <div class="cover"><img loading="lazy" src="https://archivos-oscuros-next.vercel.app/_next/image?url=%2Fel-codigo-del-guerrero-portada.webp&w=384&q=75" alt="El Código del Guerrero"><span class="price">12,99€</span><span class="cap">El Código del Guerrero</span></div>
+    <div class="cover"><img loading="lazy" src="https://archivos-oscuros-next.vercel.app/_next/image?url=%2Fel-estoico-moderno-portada.webp&w=384&q=75" alt="El Estoico Moderno"><span class="price free">GRATIS</span><span class="cap">El Estoico Moderno</span></div>
+    <div class="cover"><img loading="lazy" src="https://archivos-oscuros-next.vercel.app/_next/image?url=%2Fel-manual-del-legionario-romano-portada.webp&w=384&q=75" alt="El Manual del Legionario Romano"><span class="price">11,99€</span><span class="cap">El Manual del Legionario</span></div>
+    <div class="cover"><img loading="lazy" src="https://archivos-oscuros-next.vercel.app/_next/image?url=%2Fla-filosofia-vikinga-portada.webp&w=384&q=75" alt="La Filosofía Vikinga"><span class="price">10,99€</span><span class="cap">La Filosofía Vikinga</span></div>
+    <div class="cover"><img loading="lazy" src="https://archivos-oscuros-next.vercel.app/_next/image?url=%2Fla-mente-del-samurai-portada.webp&w=384&q=75" alt="La Mente del Samurái"><span class="price">10,99€</span><span class="cap">La Mente del Samurái</span></div>
+    <div class="cover"><img loading="lazy" src="https://archivos-oscuros-next.vercel.app/_next/image?url=%2Fsangre-espartana-portada.webp&w=384&q=75" alt="Sangre Espartana"><span class="price">11,49€</span><span class="cap">Sangre Espartana</span></div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack" class="wrap">
+  <p class="eyebrow">Tecnología</p>
+  <h2 class="title">Stack técnico</h2>
+  <p class="section-lede">Framework moderno + servicios gestionados especializados para las partes difíciles (auth, pagos).</p>
+  <div class="stackgrid">
+    <div class="tech"><b>Next.js 16</b><span>App Router · Turbopack · ISR</span></div>
+    <div class="tech"><b>React 19</b><span>Server + Client Components</span></div>
+    <div class="tech"><b>Tailwind CSS v4</b><span>CSS-first @theme</span></div>
+    <div class="tech"><b>TypeScript</b><span>Tipado estricto</span></div>
+    <div class="tech"><b>Clerk</b><span>Autenticación · cuentas</span></div>
+    <div class="tech"><b>Supabase</b><span>Postgres · storage privado</span></div>
+    <div class="tech"><b>Stripe</b><span>Checkout · webhooks</span></div>
+    <div class="tech"><b>Vercel</b><span>Hosting · edge · analytics</span></div>
+    <div class="tech"><b>framer-motion</b><span>Animación de interfaz</span></div>
+    <div class="tech"><b>React Three Fiber</b><span>Personaje 3D (login)</span></div>
+    <div class="tech"><b>Vitest</b><span>Tests unitarios</span></div>
+    <div class="tech"><b>Playwright</b><span>Tests E2E</span></div>
+  </div>
+</section>
+
+<!-- STRUCTURE -->
+<section id="structure" class="wrap">
+  <p class="eyebrow">Arquitectura</p>
+  <h2 class="title">Estructura del sitio</h2>
+  <p class="section-lede">28 rutas. La tienda es estática (rápida, ISR 5 min); solo lo que debe ser dinámico —
+    cuenta, admin, API — se renderiza bajo demanda.</p>
+  <div class="routes">
+    <div class="rgroup">
+      <h4>Tienda</h4>
+      <ul>
+        <li><code>/</code><span class="tag static">estática</span></li>
+        <li><code>/catalogo</code><span class="tag static">estática</span></li>
+        <li><code>/gratis</code><span class="tag static">estática</span></li>
+        <li><code>/libro/[slug]</code><span class="tag static">SSG · 6</span></li>
+        <li><code>/carrito</code><span class="tag static">estática</span></li>
+        <li><code>/checkout</code><span class="tag static">estática</span></li>
+        <li><code>/compra/exito · /cancelada</code><span class="tag static">estática</span></li>
+        <li><code>/biblioteca</code><span class="tag dyn">por usuario</span></li>
+        <li><code>/acceso · /registro</code><span class="tag dyn">Clerk</span></li>
+      </ul>
+    </div>
+    <div class="rgroup">
+      <h4>Legal & meta</h4>
+      <ul>
+        <li><code>/aviso-legal</code><span class="tag static">estática</span></li>
+        <li><code>/privacidad</code><span class="tag static">estática</span></li>
+        <li><code>/terminos</code><span class="tag static">estática</span></li>
+        <li><code>/cookies</code><span class="tag static">estática</span></li>
+        <li><code>/sitemap.xml</code><span class="tag static">SEO</span></li>
+        <li><code>/robots.txt</code><span class="tag static">SEO</span></li>
+      </ul>
+    </div>
+    <div class="rgroup">
+      <h4>Admin (CMS + CRM) · protegido</h4>
+      <ul>
+        <li><code>/admin</code> · panel<span class="tag gated">admin</span></li>
+        <li><code>/admin/catalogo</code> · CRUD<span class="tag gated">admin</span></li>
+        <li><code>/admin/catalogo/[id]</code><span class="tag gated">admin</span></li>
+        <li><code>/admin/pedidos</code><span class="tag gated">admin</span></li>
+        <li><code>/admin/clientes</code> · CRM<span class="tag gated">admin</span></li>
+        <li><code>/admin/boletin</code> + CSV<span class="tag gated">admin</span></li>
+      </ul>
+    </div>
+    <div class="rgroup">
+      <h4>API</h4>
+      <ul>
+        <li><code>/api/stripe/checkout</code><span class="tag dyn">POST</span></li>
+        <li><code>/api/stripe/confirm</code><span class="tag dyn">POST</span></li>
+        <li><code>/api/stripe/webhook</code><span class="tag dyn">POST</span></li>
+        <li><code>/api/download</code><span class="tag dyn">firmada</span></li>
+        <li><code>/api/newsletter</code><span class="tag dyn">POST</span></li>
+        <li><code>/api/me/entitlements</code><span class="tag dyn">GET</span></li>
+        <li><code>/api/admin/upload</code><span class="tag gated">admin</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DATABASE -->
+<section id="database" class="wrap">
+  <p class="eyebrow">Datos</p>
+  <h2 class="title">Esquema de base de datos</h2>
+  <p class="section-lede">Postgres en Supabase. Autenticación por Clerk (IDs de usuario en texto). El rol de servicio
+    escribe desde el servidor; RLS activo como defensa en profundidad.</p>
+  <div class="schema">
+    <div class="table">
+      <div class="th">books <span class="pk">catálogo</span></div>
+      <ul>
+        <li><b>id</b> <span class="badge pk">PK</span></li>
+        <li>slug <span class="badge uq">UQ</span></li>
+        <li>title · author · category</li>
+        <li>price_cents · currency</li>
+        <li>tagline · synopsis</li>
+        <li>tags[] · formats[]</li>
+        <li>cover_image · cover_motif</li>
+        <li>stripe_price_id</li>
+        <li>storage_path</li>
+        <li>rating · featured</li>
+        <li>published · sort_order</li>
+      </ul>
+    </div>
+    <div class="table">
+      <div class="th">orders</div>
+      <ul>
+        <li><b>id</b> <span class="badge pk">PK</span></li>
+        <li>user_id · email</li>
+        <li>status <span style="color:var(--ash-600)">pending/paid/…</span></li>
+        <li>total_cents · currency</li>
+        <li>stripe_session_id <span class="badge uq">UQ</span></li>
+        <li>created_at</li>
+      </ul>
+    </div>
+    <div class="table">
+      <div class="th">order_items</div>
+      <ul>
+        <li><b>id</b> <span class="badge pk">PK</span></li>
+        <li>order_id <span class="badge fk">FK</span></li>
+        <li>book_id <span class="badge fk">FK</span></li>
+        <li>price_cents</li>
+      </ul>
+    </div>
+    <div class="table">
+      <div class="th">entitlements</div>
+      <ul>
+        <li><b>id</b> <span class="badge pk">PK</span></li>
+        <li>user_id</li>
+        <li>book_id <span class="badge fk">FK</span></li>
+        <li>order_id <span class="badge fk">FK</span></li>
+        <li>granted_at</li>
+        <li><span class="badge uq">UNIQUE (user_id, book_id)</span></li>
+      </ul>
+    </div>
+    <div class="table">
+      <div class="th">profiles</div>
+      <ul>
+        <li><b>id</b> <span class="badge pk">PK · Clerk</span></li>
+        <li>email</li>
+        <li>display_name</li>
+        <li>created_at</li>
+      </ul>
+    </div>
+    <div class="table">
+      <div class="th">newsletter_subscribers</div>
+      <ul>
+        <li><b>id</b> <span class="badge pk">PK</span></li>
+        <li>email <span class="badge uq">UQ</span></li>
+        <li>status · source</li>
+        <li>created_at</li>
+      </ul>
+    </div>
+    <div class="table">
+      <div class="th">rate_limits</div>
+      <ul>
+        <li><b>id</b> <span class="badge pk">PK</span></li>
+        <li><b>window_start</b> <span class="badge pk">PK</span></li>
+        <li>count</li>
+      </ul>
+    </div>
+    <div class="table" style="border-color:rgba(210,74,63,.3)">
+      <div class="th" style="color:var(--ember-300)">ƒ rate_limit_hit()</div>
+      <ul>
+        <li style="color:var(--ash-400)">plpgsql · atómica</li>
+        <li>INSERT … ON CONFLICT</li>
+        <li>DO UPDATE count+1</li>
+        <li>RETURNING count</li>
+        <li>auto-GC de ventanas viejas</li>
+      </ul>
+    </div>
+  </div>
+  <div class="rel">
+    <b style="color:var(--bone-100)">Relaciones —</b>
+    <code>orders</code> 1→N <code>order_items</code> · <code>orders</code> → <code>entitlements</code> ·
+    <code>books</code> referenciada por <code>order_items</code> + <code>entitlements</code> ·
+    <code>entitlements</code> = prueba de compra que autoriza la descarga (única por usuario+libro).
+  </div>
+</section>
+
+<!-- BUILT -->
+<section id="built" class="wrap">
+  <p class="eyebrow">El recorrido</p>
+  <h2 class="title">Todo lo que construimos</h2>
+  <p class="section-lede">De un prototipo estático a un producto completo en producción, por fases.</p>
+  <div class="timeline">
+    <div class="phase"><h3><span class="num">01</span> Migración Vite → Next.js 16</h3>
+      <p>Reconstrucción sobre App Router manteniendo el diseño pixel-idéntico. Renderizado estático + ISR.</p>
+      <div class="chips"><span class="chip">App Router</span><span class="chip">React 19</span><span class="chip">Tailwind v4</span></div></div>
+    <div class="phase"><h3><span class="num">02</span> Autenticación — Clerk</h3>
+      <p>Registro/acceso en rutas propias (/acceso, /registro), con un personaje 3D animado que sigue al cursor. Redirecciones reales, no modales.</p>
+      <div class="chips"><span class="chip">Clerk</span><span class="chip">React Three Fiber</span><span class="chip">rutas protegidas</span></div></div>
+    <div class="phase"><h3><span class="num">03</span> Base de datos — Supabase</h3>
+      <p>Esquema completo, catálogo dirigido por BD (fuente de verdad), degradación elegante a modo demo sin claves.</p>
+      <div class="chips"><span class="chip">Postgres</span><span class="chip">RLS</span><span class="chip">ISR + revalidateTag</span></div></div>
+    <div class="phase"><h3><span class="num">04</span> Pagos — Stripe</h3>
+      <p>Checkout alojado, webhook con verificación de firma + fallback de confirmación, cumplimiento idempotente. Prevención de doble compra.</p>
+      <div class="chips"><span class="chip">Checkout</span><span class="chip">webhook</span><span class="chip">idempotente</span></div></div>
+    <div class="phase"><h3><span class="num">05</span> Seguridad endurecida</h3>
+      <p>Rate limiting durable (Supabase), CSP + cabeceras, autorización en servidor, validación zod, ebooks en bucket privado con URLs firmadas, verificación de subidas por magic-bytes.</p>
+      <div class="chips"><span class="chip">rate limiting</span><span class="chip">CSP</span><span class="chip">zod</span><span class="chip">signed URLs</span></div></div>
+    <div class="phase"><h3><span class="num">06</span> Legal · cookies · boletín · skeletons</h3>
+      <p>Páginas legales (RGPD/LSSI), consentimiento de cookies, alta al boletín, pantallas de carga (skeleton) en catálogo, gratis y biblioteca.</p>
+      <div class="chips"><span class="chip">RGPD</span><span class="chip">cookie consent</span><span class="chip">newsletter</span></div></div>
+    <div class="phase"><h3><span class="num">07</span> Panel de administración — CMS + CRM</h3>
+      <p>Catálogo movido a la BD para CRUD completo desde el panel (con subida de portada y ebook). Pedidos, clientes (gasto/propiedad), suscriptores + export CSV. Gate de admin.</p>
+      <div class="chips"><span class="chip">CRUD de libros</span><span class="chip">CRM</span><span class="chip">uploads</span><span class="chip">updateTag</span></div></div>
+    <div class="phase"><h3><span class="num">08</span> Pulido de nivel sénior</h3>
+      <p>next/image (AVIF/WebP), sitemap + robots, Vercel Analytics + Speed Insights, error boundaries, validación de entorno, suite de tests + CI.</p>
+      <div class="chips"><span class="chip">next/image</span><span class="chip">SEO</span><span class="chip">analytics</span><span class="chip">tests + CI</span></div></div>
+    <div class="phase"><h3><span class="num">09</span> Despliegue — Vercel</h3>
+      <p>En producción con URL auto-derivada de la plataforma. Build limpio, cabeceras de seguridad presentes, imágenes servidas en AVIF.</p>
+      <div class="chips"><span class="chip">Vercel</span><span class="chip">producción</span></div></div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section id="security" class="wrap">
+  <p class="eyebrow">Defensa en profundidad</p>
+  <h2 class="title">Capas de seguridad</h2>
+  <p class="section-lede">Las partes valiosas —dinero, cuentas, archivos— protegidas por especialistas (Clerk, Stripe) y patrones endurecidos, verificadas por dos revisiones adversarias multi-agente.</p>
+  <div class="seclayers">
+    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2l7 4v6c0 5-3 8-7 10-4-2-7-5-7-10V6z"/></svg></span><span class="rowtxt"><b>Autenticación & autorización</b><span>Clerk gestiona contraseñas/sesiones · gate de admin en servidor (revisado adversariamente)</span></span></div>
+    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 12h16M4 6h16M4 18h10"/></svg></span><span class="rowtxt"><b>Rate limiting durable</b><span>Backend en Supabase (sobrevive a serverless) · por ruta, con fail-open a memoria</span></span></div>
+    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/></svg></span><span class="rowtxt"><b>CSP + cabeceras de seguridad</b><span>Content-Security-Policy con allow-list · HSTS · X-Frame-Options · Permissions-Policy</span></span></div>
+    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 12l2 2 4-4M12 3l8 4v5c0 5-3.5 7.5-8 9"/></svg></span><span class="rowtxt"><b>Validación de entrada (zod)</b><span>Todas las rutas de escritura validadas y acotadas antes de tocar la BD</span></span></div>
+    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 10V7a6 6 0 0112 0v3M5 10h14v10H5z"/></svg></span><span class="rowtxt"><b>Protección del contenido</b><span>Ebooks solo en bucket privado · descarga por URL firmada de 120s tras comprobar propiedad</span></span></div>
+    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg></span><span class="rowtxt"><b>Subidas verificadas + pagos idempotentes</b><span>Portadas validadas por magic-bytes · webhooks idempotentes (Stripe reintenta sin duplicar)</span></span></div>
+  </div>
+  <div class="review-note">
+    <div class="card"><span class="big">21</span><b>agentes de revisión</b><p>Dos auditorías adversarias multi-agente (13 + 8 agentes) sobre pagos y autorización de admin.</p></div>
+    <div class="card"><span class="big">0</span><b>fugas de datos</b><p>Verificado: el mapeo de libros al cliente lista campos explícitos — la ruta privada del archivo nunca llega al navegador.</p></div>
+  </div>
+</section>
+
+<!-- TESTS -->
+<section id="tests" class="wrap">
+  <p class="eyebrow">Calidad</p>
+  <h2 class="title">Tests & integración continua</h2>
+  <p class="section-lede">19 tests en verde. Unitarios sobre la lógica pura, E2E sobre el recorrido de compra en un navegador real — todo verificado en cada push.</p>
+  <div class="testcols">
+    <div class="testcol">
+      <h4>Unitarios · Vitest <span class="badge2">11 ✓</span></h4>
+      <ul>
+        <li>lookup por id y por slug</li>
+        <li>libros gratis (precio 0)</li>
+        <li>destacados (con fallback)</li>
+        <li>filtro por categoría</li>
+        <li>relacionados (misma categoría, excluye actual)</li>
+        <li>búsqueda (título + tags, sin distinción de mayúsculas)</li>
+        <li>orden por precio (asc/desc)</li>
+        <li>orden por valoración y por año</li>
+        <li>sin mutación del array de entrada</li>
+        <li>formato de precio (EUR es-ES)</li>
+        <li>formato de fecha (es-ES)</li>
+      </ul>
+    </div>
+    <div class="testcol">
+      <h4>E2E · Playwright <span class="badge2">8 ✓</span></h4>
+      <ul>
+        <li>la home renderiza el hero</li>
+        <li>el catálogo lista 6 libros</li>
+        <li>la búsqueda filtra correctamente</li>
+        <li>el filtro por categoría acota</li>
+        <li>ficha de libro: título, precio, sinopsis</li>
+        <li>añadir al carrito → aparece en /carrito</li>
+        <li>el consentimiento de cookies se acepta</li>
+        <li>página legal + página de gratis</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ci">
+    <b style="color:var(--bone-100)">GitHub Actions CI —</b>
+    <span class="step">npm ci</span><span class="arrow">→</span>
+    <span class="step">typecheck</span><span class="arrow">→</span>
+    <span class="step">test (unit)</span><span class="arrow">→</span>
+    <span class="step">build</span><span class="arrow">→</span>
+    <span class="step">e2e (Playwright)</span>
+  </div>
+</section>
+
+<!-- DEPLOY -->
+<section id="deploy" class="wrap">
+  <p class="eyebrow">Producción</p>
+  <h2 class="title">Despliegue</h2>
+  <div class="deploybox">
+    <div class="u">
+      <a href="https://archivos-oscuros-next.vercel.app" target="_blank" rel="noopener">archivos-oscuros-next.vercel.app</a>
+      <span>Vercel · producción · URL auto-derivada de la plataforma · imágenes en AVIF · cabeceras de seguridad activas</span>
+    </div>
+    <a class="deploybtn" href="https://archivos-oscuros-next.vercel.app" target="_blank" rel="noopener">Abrir la tienda ↗</a>
+  </div>
+</section>
+
+<footer class="wrap">
+  <span><b>Archivos Oscuros</b> — dossier del proyecto · Next.js 16 · Supabase · Stripe · Clerk · Vercel</span>
+  <span>Estoicismo · Historia · Guerreros</span>
+</footer>
+
+</body>
+</html>

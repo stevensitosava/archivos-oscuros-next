@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Transactional / account pages — no SEO value
+Disallow: /carrito
+Disallow: /checkout
+Disallow: /compra
+Disallow: /acceso
+Disallow: /biblioteca
+
+Sitemap: https://archivos-oscuros.vercel.app/sitemap.xml
