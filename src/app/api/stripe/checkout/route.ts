@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, currentUser, type User } from "@clerk/nextjs/server";
 import { z } from "zod";
 import type { Book } from "@/types";
-import { stripe, isStripeServerConfigured, STRIPE_TAX_ENABLED, EBOOK_TAX_CODE } from "@/lib/stripe-server";
+import { stripe, isStripeServerConfigured } from "@/lib/stripe-server";
 import { getBookById } from "@/lib/books-data";
 import { createOrder, grantEntitlement, getOwnedBookIds, subscribeNewsletter } from "@/lib/db";
 import { paidTotal, offerLabel } from "@/data/bundles";
@@ -102,12 +102,6 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Stripe Tax fields, applied only when tax is switched on. Prices are advertised
-  // "IVA incluido", so tax is INCLUSIVE — the buyer's total never changes; Stripe
-  // just backs out the VAT portion. The ebook tax code pins the reduced ebook rate.
-  const taxPriceFields = STRIPE_TAX_ENABLED ? { tax_behavior: "inclusive" as const } : {};
-  const taxProductFields = STRIPE_TAX_ENABLED ? { tax_code: EBOOK_TAX_CODE } : {};
-
   const line_items = bundle && savings > 0
     ? [
         {
@@ -115,11 +109,9 @@ export async function POST(req: NextRequest) {
           price_data: {
             currency,
             unit_amount: total,
-            ...taxPriceFields,
             product_data: {
               name: `${offerLabel(paid.length, bundle)} · ${paid.length} libros`,
               description: paid.map((b) => b.title).join(", ").slice(0, 250),
-              ...taxProductFields,
             },
           },
         },
@@ -129,8 +121,7 @@ export async function POST(req: NextRequest) {
         price_data: {
           currency: (b.currency || "EUR").toLowerCase(),
           unit_amount: b.priceCents,
-          ...taxPriceFields,
-          product_data: { name: b.title, description: b.tagline?.slice(0, 120), ...taxProductFields },
+          product_data: { name: b.title, description: b.tagline?.slice(0, 120) },
         },
       }));
 
@@ -140,10 +131,6 @@ export async function POST(req: NextRequest) {
       mode: "payment",
       line_items,
       customer_email: email,
-      // Stripe Tax: computes destination VAT and collects the buyer's location.
-      // Compatible with Adaptive Pricing (not on its restriction list). Off until
-      // the Dashboard is configured — see STRIPE_TAX_ENABLED.
-      ...(STRIPE_TAX_ENABLED ? { automatic_tax: { enabled: true } } : {}),
       success_url: `${origin}/compra/exito?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/compra/cancelada`,
       // ALL ids (free + paid) — free titles are fulfilled together on success.
