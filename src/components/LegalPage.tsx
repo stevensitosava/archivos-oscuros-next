@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { LEGAL } from "@/data/legal";
+import { SITE_URL } from "@/lib/env";
+import { safeJsonLd } from "@/lib/jsonld";
 
 const LEGAL_LINKS = [
   { href: "/aviso-legal", label: "Aviso legal" },
@@ -22,8 +24,19 @@ export default function LegalPage({
   children: ReactNode;
   current: string;
 }) {
+  const currentHref = LEGAL_LINKS.find((l) => l.label === current)?.href ?? "/";
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: title, item: `${SITE_URL}${currentHref}` },
+    ],
+  };
+
   return (
     <section className="mx-auto max-w-3xl px-5 py-20 sm:px-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumb) }} />
       <p className="eyebrow mb-3">{eyebrow}</p>
       <h1 className="text-[clamp(2rem,4.5vw,3rem)]">{title}</h1>
 

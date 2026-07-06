@@ -15,7 +15,6 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: "destacados", label: "Destacados" },
   { value: "precio-asc", label: "Precio: menor a mayor" },
   { value: "precio-desc", label: "Precio: mayor a menor" },
-  { value: "valoracion", label: "Mejor valorados" },
   { value: "recientes", label: "Más recientes" },
 ];
 
@@ -83,13 +82,13 @@ export default function CatalogoClient() {
       </header>
 
       <div className="mt-8">
-        <BundlePromo />
+        <BundlePromo onCatalog />
       </div>
 
       <hr className="gold-rule my-10" />
 
       {/* ───────────────── Controls ───────────────── */}
-      <div className="flex flex-col gap-6">
+      <div id="catalogo-explorar" className="scroll-mt-24 flex flex-col gap-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <label className="relative block w-full lg:max-w-md">
             <span className="sr-only">Buscar</span>

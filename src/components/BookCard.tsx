@@ -3,7 +3,7 @@ import type { Book } from "../types";
 import { CATEGORIES } from "../types";
 import ProceduralCover from "./ProceduralCover";
 import Price from "./Price";
-import RatingStars from "./RatingStars";
+import RatingDisplay from "./RatingDisplay";
 import AddToCartButton from "./AddToCartButton";
 
 interface BookCardProps {
@@ -54,9 +54,7 @@ export default function BookCard({ book, className = "" }: BookCardProps) {
         </Link>
         <p className="mt-0.5 text-[0.95rem] italic text-ash-400">{book.author}</p>
 
-        <div className="mt-2 flex items-center gap-3">
-          <RatingStars rating={book.rating} className="text-[0.8rem]" />
-        </div>
+        <RatingDisplay avg={book.ratingAvg} count={book.ratingCount} showValue className="mt-2 text-[0.85rem]" />
 
         <p className="mt-3 line-clamp-2 text-[0.95rem] text-bone-200/80">{book.tagline}</p>
 

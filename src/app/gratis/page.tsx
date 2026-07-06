@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { freeBooks } from "@/data/books";
 import { getAllBooks } from "@/lib/books-data";
+import { SITE_URL } from "@/lib/env";
+import { safeJsonLd } from "@/lib/jsonld";
 import BookGrid from "@/components/BookGrid";
 import Sigil from "@/components/Sigil";
 
@@ -15,8 +17,40 @@ export const metadata: Metadata = {
 export default async function Gratis() {
   const free = freeBooks(await getAllBooks());
 
+  // Machine-readable list of the free titles + breadcrumb (GEO/SEO).
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        name: "Libros gratis · Archivos Oscuros",
+        url: `${SITE_URL}/gratis`,
+        inLanguage: "es",
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        mainEntity: {
+          "@type": "ItemList",
+          numberOfItems: free.length,
+          itemListElement: free.map((b, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            url: `${SITE_URL}/libro/${b.slug}`,
+            name: b.title,
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Inicio", item: `${SITE_URL}/` },
+          { "@type": "ListItem", position: 2, name: "Gratis", item: `${SITE_URL}/gratis` },
+        ],
+      },
+    ],
+  };
+
   return (
     <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <p className="eyebrow mb-3">Sin coste</p>
       <h1 className="text-[clamp(2.2rem,5vw,3.6rem)]">Libros gratis</h1>
       <p className="mt-4 max-w-xl text-[1.05rem] leading-relaxed text-ash-400">

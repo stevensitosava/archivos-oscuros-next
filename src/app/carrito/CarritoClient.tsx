@@ -5,7 +5,8 @@ import type { Book } from "@/types";
 import { useCart } from "@/store/cart";
 import { findById } from "@/data/books";
 import { paidTotal, nextBundleHint, offerLabel } from "@/data/bundles";
-import { formatPrice } from "@/lib/format";
+import { formatMoney, isLocal } from "@/lib/money";
+import { useLocale } from "@/components/LocaleProvider";
 import { trackEvent } from "@/lib/analytics";
 import { useBooks } from "@/components/BooksProvider";
 import ProceduralCover from "@/components/ProceduralCover";
@@ -16,6 +17,7 @@ import Sigil from "@/components/Sigil";
 export default function CarritoClient() {
   const { lines, remove, clear } = useCart();
   const allBooks = useBooks();
+  const loc = useLocale();
 
   const books = lines
     .map((line) => findById(allBooks, line.bookId))
@@ -119,18 +121,20 @@ export default function CarritoClient() {
             <div className="mt-2.5 flex items-center justify-between text-ember-300">
               <span className="text-[0.9rem]">{offerLabel(paid.length, bundle)} · {paid.length} libros</span>
               <span className="font-mono text-sm" style={{ fontFamily: "var(--font-mono)" }}>
-                −{formatPrice(savings, currency)}
+                −{formatMoney(savings, loc)}
               </span>
             </div>
           )}
-          <p className="meta mt-2">IVA incluido · Entrega digital</p>
+          <p className="meta mt-2">
+            IVA incluido · Entrega digital{isLocal(loc) ? ` · Precios en ${loc.currency}` : ""}
+          </p>
 
           {hint && (
             <p className="mt-4 flex items-center gap-2 rounded-md border border-ember-500/25 bg-ember-500/[0.06] px-3.5 py-2.5 text-[0.8rem] leading-snug text-ember-200/90">
               <Sigil motif="key" className="w-3.5 shrink-0 text-ember-400" weight={1.8} />
               <span>
                 Añade {hint.needed} {hint.needed === 1 ? "libro" : "libros"} más y llévate «{hint.tier.label}» por{" "}
-                {formatPrice(hint.tier.priceCents, currency)}.
+                {formatMoney(hint.tier.priceCents, loc)}.
               </span>
             </p>
           )}

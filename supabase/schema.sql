@@ -182,3 +182,22 @@ create policy "books: public read"
 
 -- profiles / orders / order_items / entitlements / newsletter:
 -- NO anon/authenticated policies → all access is service-role only (server).
+
+-- ============================================================
+-- reviews — verified-buyer ratings (1–5 stars). One row per (user, book);
+-- re-rating updates it. All access is service-role only (server actions
+-- enforce Clerk auth + entitlement ownership before writing).
+-- ============================================================
+create table if not exists public.reviews (
+  id          bigint generated always as identity primary key,
+  book_id     text not null references public.books(id) on delete cascade,
+  user_id     text not null,                     -- Clerk user id
+  rating      int  not null check (rating between 1 and 5),
+  comment     text,                              -- optional short note (future)
+  created_at  timestamptz not null default now(),
+  updated_at  timestamptz not null default now(),
+  unique (user_id, book_id)
+);
+create index if not exists reviews_book_idx on public.reviews (book_id);
+alter table public.reviews enable row level security;
+-- no policies → anon/authenticated denied; only the server (service role) reads/writes.

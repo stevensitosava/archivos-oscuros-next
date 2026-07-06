@@ -7,6 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CartProvider } from "@/store/cart";
 import { EntitlementsProvider } from "@/components/EntitlementsProvider";
 import { BooksProvider } from "@/components/BooksProvider";
+import { LocaleProvider } from "@/components/LocaleProvider";
 import Shell from "@/components/Shell";
 import { getAllBooks } from "@/lib/books-data";
 import { SITE_URL, isClerkConfigured } from "@/lib/env";
@@ -116,15 +117,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(JSON_LD) }}
       />
-      <BooksProvider books={books}>
-        <CartProvider>
-          <EntitlementsProvider>
-            {/* Shell renders storefront chrome (grain + nav + footer + cookie
-                banner) on public routes and a bare passthrough on /admin. */}
-            <Shell>{children}</Shell>
-          </EntitlementsProvider>
-        </CartProvider>
-      </BooksProvider>
+      <LocaleProvider>
+        <BooksProvider books={books}>
+          <CartProvider>
+            <EntitlementsProvider>
+              {/* Shell renders storefront chrome (grain + nav + footer + cookie
+                  banner) on public routes and a bare passthrough on /admin. */}
+              <Shell>{children}</Shell>
+            </EntitlementsProvider>
+          </CartProvider>
+        </BooksProvider>
+      </LocaleProvider>
       <Analytics />
       <SpeedInsights />
     </>

@@ -53,7 +53,7 @@
   .hero{padding-top:78px;padding-bottom:58px}
   .hero h1{font-size:clamp(3rem,9vw,6.2rem);font-weight:800;letter-spacing:-.045em;margin:18px 0 0;text-transform:uppercase;line-height:.9}
   .hero h1 .os{display:block;font-size:.42em;letter-spacing:.02em;color:var(--bone-100);font-weight:700}
-  .hero .lede{max-width:620px;margin-top:24px;font-size:1.12rem;color:var(--bone-300);line-height:1.6}
+  .hero .lede{max-width:640px;margin-top:24px;font-size:1.12rem;color:var(--bone-300);line-height:1.6}
   .pill{display:inline-flex;align-items:center;gap:9px;margin-top:26px;padding:9px 16px;border:1px solid var(--line);border-radius:999px;font-size:.82rem;color:var(--bone-200)}
   .pill .dot{width:8px;height:8px;border-radius:50%;background:var(--emerald);box-shadow:0 0 10px var(--emerald)}
   .pill a{color:var(--ember-300)}
@@ -66,7 +66,7 @@
   @media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}}
 
   h2.title{font-size:clamp(1.8rem,3.5vw,2.6rem);margin-top:14px;font-weight:700}
-  .section-lede{max-width:640px;margin-top:14px;color:var(--ash-400)}
+  .section-lede{max-width:660px;margin-top:14px;color:var(--ash-400)}
 
   /* generic card grid */
   .grid{display:grid;gap:16px}
@@ -90,7 +90,6 @@
   .sw{height:52px;display:flex;align-items:flex-end;padding:5px 6px;font-size:.54rem;color:rgba(255,255,255,.55);font-family:monospace}
   .sw.dark{color:rgba(255,255,255,.4)}
 
-  .palette-note{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
   .type-demo{background:var(--ink-850);border:1px solid var(--line);border-radius:14px;padding:24px}
   .type-demo .aa{font-size:3.2rem;font-weight:800;color:var(--bone-50);line-height:1}
   .type-demo .weights{margin-top:14px;display:flex;flex-wrap:wrap;gap:4px 14px;color:var(--ash-400);font-size:.8rem}
@@ -149,7 +148,7 @@
   .phase::before{content:"";position:absolute;left:-28px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--ember-500);box-shadow:0 0 0 4px var(--ink-950),0 0 12px var(--ember-500)}
   .phase h3{font-size:1.12rem;display:flex;align-items:center;gap:10px}
   .phase .num{font-family:monospace;font-size:.72rem;color:var(--ash-500)}
-  .phase p{margin:6px 0 0;color:var(--ash-400);font-size:.9rem;max-width:70ch}
+  .phase p{margin:6px 0 0;color:var(--ash-400);font-size:.9rem;max-width:72ch}
   .phase .chips{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
   .chip{font-size:.66rem;padding:3px 9px;border:1px solid var(--line);border-radius:999px;color:var(--bone-300);background:var(--ink-850)}
 
@@ -212,16 +211,17 @@
   <p class="eyebrow">Project Dossier · Tienda de ebooks</p>
   <h1>Archivos<span class="os">Oscuros</span></h1>
   <p class="lede">Librería digital de estoicismo, historia y códigos de guerreros — construida como un
-    <em>producto de nivel sénior</em>: catálogo dirigido por base de datos, panel de administración,
-    pagos, seguridad endurecida y suite de tests. De un prototipo en Vite a una app Next.js 16 en producción.</p>
-  <span class="pill"><span class="dot"></span> En producción · <a href="https://archivos-oscuros-next.vercel.app" target="_blank" rel="noopener">archivos-oscuros-next.vercel.app</a></span>
+    <em>producto de nivel sénior</em> y ahora <em>plenamente en vivo</em>: dominio propio, pagos reales con Stripe,
+    correos transaccionales, analítica de embudo y una auditoría de seguridad multi-agente. De un prototipo en Vite
+    a una app Next.js 16 en producción con su propio repositorio.</p>
+  <span class="pill"><span class="dot"></span> En producción · <a href="https://www.archivososcuros.com" target="_blank" rel="noopener">www.archivososcuros.com</a></span>
 
   <div class="stats">
-    <div class="stat"><div class="n">28</div><div class="l">Rutas</div></div>
+    <div class="stat"><div class="n">32</div><div class="l">Rutas</div></div>
     <div class="stat"><div class="n">7</div><div class="l">Tablas BD</div></div>
-    <div class="stat"><div class="n">19</div><div class="l">Tests ✓</div></div>
-    <div class="stat"><div class="n">13+</div><div class="l">Capas de seguridad</div></div>
-    <div class="stat"><div class="n">2</div><div class="l">Revisiones adversarias</div></div>
+    <div class="stat"><div class="n">39</div><div class="l">Tests ✓</div></div>
+    <div class="stat"><div class="n">14</div><div class="l">Capas de seguridad</div></div>
+    <div class="stat"><div class="n">68</div><div class="l">Agentes de auditoría</div></div>
   </div>
 </header>
 
@@ -265,12 +265,17 @@
   </div>
 
   <div class="covers">
-    <div class="cover"><img loading="lazy" src="https://archivos-oscuros-next.vercel.app/_next/image?url=%2Fel-codigo-del-guerrero-portada.webp&w=384&q=75" alt="El Código del Guerrero"><span class="price">12,99€</span><span class="cap">El Código del Guerrero</span></div>
-    <div class="cover"><img loading="lazy" src="https://archivos-oscuros-next.vercel.app/_next/image?url=%2Fel-estoico-moderno-portada.webp&w=384&q=75" alt="El Estoico Moderno"><span class="price free">GRATIS</span><span class="cap">El Estoico Moderno</span></div>
-    <div class="cover"><img loading="lazy" src="https://archivos-oscuros-next.vercel.app/_next/image?url=%2Fel-manual-del-legionario-romano-portada.webp&w=384&q=75" alt="El Manual del Legionario Romano"><span class="price">11,99€</span><span class="cap">El Manual del Legionario</span></div>
-    <div class="cover"><img loading="lazy" src="https://archivos-oscuros-next.vercel.app/_next/image?url=%2Fla-filosofia-vikinga-portada.webp&w=384&q=75" alt="La Filosofía Vikinga"><span class="price">10,99€</span><span class="cap">La Filosofía Vikinga</span></div>
-    <div class="cover"><img loading="lazy" src="https://archivos-oscuros-next.vercel.app/_next/image?url=%2Fla-mente-del-samurai-portada.webp&w=384&q=75" alt="La Mente del Samurái"><span class="price">10,99€</span><span class="cap">La Mente del Samurái</span></div>
-    <div class="cover"><img loading="lazy" src="https://archivos-oscuros-next.vercel.app/_next/image?url=%2Fsangre-espartana-portada.webp&w=384&q=75" alt="Sangre Espartana"><span class="price">11,49€</span><span class="cap">Sangre Espartana</span></div>
+    <div class="cover"><img loading="lazy" src="https://www.archivososcuros.com/_next/image?url=%2Fel-codigo-del-guerrero-portada.webp&w=384&q=75" alt="El Código del Guerrero"><span class="price free">GRATIS</span><span class="cap">El Código del Guerrero</span></div>
+    <div class="cover"><img loading="lazy" src="https://www.archivososcuros.com/_next/image?url=%2Fel-estoico-moderno-portada.webp&w=384&q=75" alt="El Estoico Moderno"><span class="price">4,99€</span><span class="cap">El Estoico Moderno</span></div>
+    <div class="cover"><img loading="lazy" src="https://www.archivososcuros.com/_next/image?url=%2Fel-manual-del-legionario-romano-portada.webp&w=384&q=75" alt="El Manual del Legionario Romano"><span class="price">4,99€</span><span class="cap">El Manual del Legionario</span></div>
+    <div class="cover"><img loading="lazy" src="https://www.archivososcuros.com/_next/image?url=%2Fla-filosofia-vikinga-portada.webp&w=384&q=75" alt="La Filosofía Vikinga"><span class="price">4,99€</span><span class="cap">La Filosofía Vikinga</span></div>
+    <div class="cover"><img loading="lazy" src="https://www.archivososcuros.com/_next/image?url=%2Fla-mente-del-samurai-portada.webp&w=384&q=75" alt="La Mente del Samurái"><span class="price">4,99€</span><span class="cap">La Mente del Samurái</span></div>
+    <div class="cover"><img loading="lazy" src="https://www.archivososcuros.com/_next/image?url=%2Fsangre-espartana-portada.webp&w=384&q=75" alt="Sangre Espartana"><span class="price">4,99€</span><span class="cap">Sangre Espartana</span></div>
+  </div>
+  <div class="rel" style="border-left-color:var(--emerald)">
+    <b style="color:var(--bone-100)">Precios —</b> El Código del Guerrero es el gancho <b style="color:var(--emerald)">gratuito</b>;
+    el resto a <code>4,99&nbsp;€</code>. Packs con descuento automático en el carrito: <code>3 → 9,99&nbsp;€</code> ·
+    <code>5 → 14,99&nbsp;€</code>. Ofertas relámpago por tiempo limitado.
   </div>
 </section>
 
@@ -278,20 +283,20 @@
 <section id="stack" class="wrap">
   <p class="eyebrow">Tecnología</p>
   <h2 class="title">Stack técnico</h2>
-  <p class="section-lede">Framework moderno + servicios gestionados especializados para las partes difíciles (auth, pagos).</p>
+  <p class="section-lede">Framework moderno + servicios gestionados especializados para las partes difíciles (auth, pagos, correo).</p>
   <div class="stackgrid">
     <div class="tech"><b>Next.js 16</b><span>App Router · Turbopack · ISR</span></div>
     <div class="tech"><b>React 19</b><span>Server + Client Components</span></div>
     <div class="tech"><b>Tailwind CSS v4</b><span>CSS-first @theme</span></div>
     <div class="tech"><b>TypeScript</b><span>Tipado estricto</span></div>
-    <div class="tech"><b>Clerk</b><span>Autenticación · cuentas</span></div>
+    <div class="tech"><b>Clerk</b><span>Auth · instancia de producción</span></div>
     <div class="tech"><b>Supabase</b><span>Postgres · storage privado</span></div>
-    <div class="tech"><b>Stripe</b><span>Checkout · webhooks</span></div>
-    <div class="tech"><b>Vercel</b><span>Hosting · edge · analytics</span></div>
+    <div class="tech"><b>Stripe</b><span>Checkout · webhook · en vivo</span></div>
+    <div class="tech"><b>Resend</b><span>Correo transaccional + campañas</span></div>
+    <div class="tech"><b>Vercel</b><span>Hosting · Analytics · Speed Insights</span></div>
     <div class="tech"><b>framer-motion</b><span>Animación de interfaz</span></div>
     <div class="tech"><b>React Three Fiber</b><span>Personaje 3D (login)</span></div>
-    <div class="tech"><b>Vitest</b><span>Tests unitarios</span></div>
-    <div class="tech"><b>Playwright</b><span>Tests E2E</span></div>
+    <div class="tech"><b>Vitest + Playwright</b><span>Unitarios + E2E</span></div>
   </div>
 </section>
 
@@ -299,8 +304,8 @@
 <section id="structure" class="wrap">
   <p class="eyebrow">Arquitectura</p>
   <h2 class="title">Estructura del sitio</h2>
-  <p class="section-lede">28 rutas. La tienda es estática (rápida, ISR 5 min); solo lo que debe ser dinámico —
-    cuenta, admin, API — se renderiza bajo demanda.</p>
+  <p class="section-lede">~32 rutas. La tienda es estática (rápida, ISR 5 min); solo lo que debe ser dinámico —
+    cuenta, admin, API, precios con oferta activa— se renderiza bajo demanda.</p>
   <div class="routes">
     <div class="rgroup">
       <h4>Tienda</h4>
@@ -310,21 +315,21 @@
         <li><code>/gratis</code><span class="tag static">estática</span></li>
         <li><code>/libro/[slug]</code><span class="tag static">SSG · 6</span></li>
         <li><code>/carrito</code><span class="tag static">estática</span></li>
-        <li><code>/checkout</code><span class="tag static">estática</span></li>
+        <li><code>/checkout</code><span class="tag gated">sesión</span></li>
         <li><code>/compra/exito · /cancelada</code><span class="tag static">estática</span></li>
         <li><code>/biblioteca</code><span class="tag dyn">por usuario</span></li>
         <li><code>/acceso · /registro</code><span class="tag dyn">Clerk</span></li>
       </ul>
     </div>
     <div class="rgroup">
-      <h4>Legal & meta</h4>
+      <h4>Legal · SEO/GEO · meta</h4>
       <ul>
-        <li><code>/aviso-legal</code><span class="tag static">estática</span></li>
-        <li><code>/privacidad</code><span class="tag static">estática</span></li>
-        <li><code>/terminos</code><span class="tag static">estática</span></li>
-        <li><code>/cookies</code><span class="tag static">estática</span></li>
-        <li><code>/sitemap.xml</code><span class="tag static">SEO</span></li>
+        <li><code>/aviso-legal · /privacidad</code><span class="tag static">estática</span></li>
+        <li><code>/terminos · /cookies</code><span class="tag static">estática</span></li>
+        <li><code>/baja</code> · baja del boletín<span class="tag dyn">token HMAC</span></li>
+        <li><code>/sitemap.xml</code> (+ imágenes)<span class="tag static">SEO</span></li>
         <li><code>/robots.txt</code><span class="tag static">SEO</span></li>
+        <li><code>/llms.txt</code> · para IAs<span class="tag static">GEO</span></li>
       </ul>
     </div>
     <div class="rgroup">
@@ -332,19 +337,16 @@
       <ul>
         <li><code>/admin</code> · panel<span class="tag gated">admin</span></li>
         <li><code>/admin/catalogo</code> · CRUD<span class="tag gated">admin</span></li>
-        <li><code>/admin/catalogo/[id]</code><span class="tag gated">admin</span></li>
         <li><code>/admin/pedidos</code><span class="tag gated">admin</span></li>
         <li><code>/admin/clientes</code> · CRM<span class="tag gated">admin</span></li>
-        <li><code>/admin/boletin</code> + CSV<span class="tag gated">admin</span></li>
+        <li><code>/admin/boletin</code> · campañas + CSV<span class="tag gated">admin</span></li>
       </ul>
     </div>
     <div class="rgroup">
       <h4>API</h4>
       <ul>
-        <li><code>/api/stripe/checkout</code><span class="tag dyn">POST</span></li>
-        <li><code>/api/stripe/confirm</code><span class="tag dyn">POST</span></li>
-        <li><code>/api/stripe/webhook</code><span class="tag dyn">POST</span></li>
-        <li><code>/api/download</code><span class="tag dyn">firmada</span></li>
+        <li><code>/api/stripe/checkout · confirm · webhook</code><span class="tag dyn">POST</span></li>
+        <li><code>/api/download</code><span class="tag dyn">URL firmada</span></li>
         <li><code>/api/newsletter</code><span class="tag dyn">POST</span></li>
         <li><code>/api/me/entitlements</code><span class="tag dyn">GET</span></li>
         <li><code>/api/admin/upload</code><span class="tag gated">admin</span></li>
@@ -358,7 +360,8 @@
   <p class="eyebrow">Datos</p>
   <h2 class="title">Esquema de base de datos</h2>
   <p class="section-lede">Postgres en Supabase. Autenticación por Clerk (IDs de usuario en texto). El rol de servicio
-    escribe desde el servidor; RLS activo como defensa en profundidad.</p>
+    escribe desde el servidor; RLS activo como defensa en profundidad. <code>profiles</code> se rellena solo, al vuelo,
+    desde Clerk para el CRM.</p>
   <div class="schema">
     <div class="table">
       <div class="th">books <span class="pk">catálogo</span></div>
@@ -368,9 +371,9 @@
         <li>title · author · category</li>
         <li>price_cents · currency</li>
         <li>tagline · synopsis</li>
+        <li>pages · year · language</li>
         <li>tags[] · formats[]</li>
         <li>cover_image · cover_motif</li>
-        <li>stripe_price_id</li>
         <li>storage_path</li>
         <li>rating · featured</li>
         <li>published · sort_order</li>
@@ -414,6 +417,7 @@
         <li>email</li>
         <li>display_name</li>
         <li>created_at</li>
+        <li style="color:var(--emerald)">sync automático</li>
       </ul>
     </div>
     <div class="table">
@@ -422,6 +426,7 @@
         <li><b>id</b> <span class="badge pk">PK</span></li>
         <li>email <span class="badge uq">UQ</span></li>
         <li>status · source</li>
+        <li>consent_at <span style="color:var(--ash-600)">RGPD</span></li>
         <li>created_at</li>
       </ul>
     </div>
@@ -456,35 +461,44 @@
 <section id="built" class="wrap">
   <p class="eyebrow">El recorrido</p>
   <h2 class="title">Todo lo que construimos</h2>
-  <p class="section-lede">De un prototipo estático a un producto completo en producción, por fases.</p>
+  <p class="section-lede">De un prototipo estático a un producto completo, en vivo y con ventas reales — por fases.</p>
   <div class="timeline">
     <div class="phase"><h3><span class="num">01</span> Migración Vite → Next.js 16</h3>
       <p>Reconstrucción sobre App Router manteniendo el diseño pixel-idéntico. Renderizado estático + ISR.</p>
       <div class="chips"><span class="chip">App Router</span><span class="chip">React 19</span><span class="chip">Tailwind v4</span></div></div>
     <div class="phase"><h3><span class="num">02</span> Autenticación — Clerk</h3>
-      <p>Registro/acceso en rutas propias (/acceso, /registro), con un personaje 3D animado que sigue al cursor. Redirecciones reales, no modales.</p>
+      <p>Registro/acceso en rutas propias, con un personaje 3D animado que sigue al cursor. Redirecciones reales, no modales.</p>
       <div class="chips"><span class="chip">Clerk</span><span class="chip">React Three Fiber</span><span class="chip">rutas protegidas</span></div></div>
     <div class="phase"><h3><span class="num">03</span> Base de datos — Supabase</h3>
       <p>Esquema completo, catálogo dirigido por BD (fuente de verdad), degradación elegante a modo demo sin claves.</p>
       <div class="chips"><span class="chip">Postgres</span><span class="chip">RLS</span><span class="chip">ISR + revalidateTag</span></div></div>
     <div class="phase"><h3><span class="num">04</span> Pagos — Stripe</h3>
-      <p>Checkout alojado, webhook con verificación de firma + fallback de confirmación, cumplimiento idempotente. Prevención de doble compra.</p>
+      <p>Checkout alojado, webhook con verificación de firma + fallback de confirmación, cumplimiento idempotente. Prevención de doble compra; precio recalculado siempre en el servidor.</p>
       <div class="chips"><span class="chip">Checkout</span><span class="chip">webhook</span><span class="chip">idempotente</span></div></div>
     <div class="phase"><h3><span class="num">05</span> Seguridad endurecida</h3>
       <p>Rate limiting durable (Supabase), CSP + cabeceras, autorización en servidor, validación zod, ebooks en bucket privado con URLs firmadas, verificación de subidas por magic-bytes.</p>
       <div class="chips"><span class="chip">rate limiting</span><span class="chip">CSP</span><span class="chip">zod</span><span class="chip">signed URLs</span></div></div>
-    <div class="phase"><h3><span class="num">06</span> Legal · cookies · boletín · skeletons</h3>
-      <p>Páginas legales (RGPD/LSSI), consentimiento de cookies, alta al boletín, pantallas de carga (skeleton) en catálogo, gratis y biblioteca.</p>
-      <div class="chips"><span class="chip">RGPD</span><span class="chip">cookie consent</span><span class="chip">newsletter</span></div></div>
-    <div class="phase"><h3><span class="num">07</span> Panel de administración — CMS + CRM</h3>
-      <p>Catálogo movido a la BD para CRUD completo desde el panel (con subida de portada y ebook). Pedidos, clientes (gasto/propiedad), suscriptores + export CSV. Gate de admin.</p>
-      <div class="chips"><span class="chip">CRUD de libros</span><span class="chip">CRM</span><span class="chip">uploads</span><span class="chip">updateTag</span></div></div>
-    <div class="phase"><h3><span class="num">08</span> Pulido de nivel sénior</h3>
-      <p>next/image (AVIF/WebP), sitemap + robots, Vercel Analytics + Speed Insights, error boundaries, validación de entorno, suite de tests + CI.</p>
-      <div class="chips"><span class="chip">next/image</span><span class="chip">SEO</span><span class="chip">analytics</span><span class="chip">tests + CI</span></div></div>
-    <div class="phase"><h3><span class="num">09</span> Despliegue — Vercel</h3>
-      <p>En producción con URL auto-derivada de la plataforma. Build limpio, cabeceras de seguridad presentes, imágenes servidas en AVIF.</p>
-      <div class="chips"><span class="chip">Vercel</span><span class="chip">producción</span></div></div>
+    <div class="phase"><h3><span class="num">06</span> Panel de administración — CMS + CRM</h3>
+      <p>Catálogo en la BD para CRUD completo desde el panel (con subida de portada y ebook). Pedidos, clientes (gasto/propiedad, con nombre+email auto-sincronizados), suscriptores + export CSV. Gate de admin.</p>
+      <div class="chips"><span class="chip">CRUD de libros</span><span class="chip">CRM</span><span class="chip">uploads</span><span class="chip">profile sync</span></div></div>
+    <div class="phase"><h3><span class="num">07</span> Precios dinámicos — packs + ofertas relámpago</h3>
+      <p>Ofertas por lotes (3 → 9,99 € · 5 → 14,99 €) con la mejor combinación calculada en el servidor. Ofertas relámpago basadas en tiempo que se activan y revierten solas por reloj, sin ningún cron.</p>
+      <div class="chips"><span class="chip">bundles</span><span class="chip">flash sales</span><span class="chip">precio server-side</span></div></div>
+    <div class="phase"><h3><span class="num">08</span> Correo — Resend</h3>
+      <p>Confirmación de compra (una sola vez, a prueba de recargas y pestañas), bienvenida con el libro gratis, y campañas de boletín a suscriptores con consentimiento — cada una con baja en un clic (token HMAC).</p>
+      <div class="chips"><span class="chip">confirmación</span><span class="chip">bienvenida</span><span class="chip">campañas</span><span class="chip">unsubscribe</span></div></div>
+    <div class="phase"><h3><span class="num">09</span> Marketing & analítica de embudo</h3>
+      <p>Vercel Analytics + Speed Insights, más eventos personalizados: añadir/quitar del carrito, añadir pack, inicio de checkout, compra completada (con valor), descarga gratis y alta al boletín.</p>
+      <div class="chips"><span class="chip">Analytics</span><span class="chip">funnel events</span><span class="chip">Speed Insights</span></div></div>
+    <div class="phase"><h3><span class="num">10</span> SEO + GEO</h3>
+      <p>Datos estructurados JSON-LD (Organization, WebSite, Book/Offer, Breadcrumb, FAQ, ItemList), sección de preguntas frecuentes, sitemap con imágenes, <code>robots.txt</code> y un <code>llms.txt</code> para los motores de respuesta de IA.</p>
+      <div class="chips"><span class="chip">JSON-LD</span><span class="chip">FAQ</span><span class="chip">llms.txt</span><span class="chip">OpenGraph por libro</span></div></div>
+    <div class="phase"><h3><span class="num">11</span> Salida a producción real</h3>
+      <p>Dominio propio <b style="color:var(--bone-100)">www.archivososcuros.com</b>, instancia de producción de Clerk (dominio, OAuth), Stripe en vivo con webhook, Resend con dominio verificado, páginas legales completadas.</p>
+      <div class="chips"><span class="chip">dominio propio</span><span class="chip">Clerk prod</span><span class="chip">Stripe live</span><span class="chip">RGPD/LSSI</span></div></div>
+    <div class="phase"><h3><span class="num">12</span> Auditoría de seguridad, limpieza y GitHub</h3>
+      <p>Auditoría adversaria de 20 agentes: corregido un XSS almacenado en JSON-LD (escape de salida) y el escape del correo. Código muerto eliminado (~105 MB de assets sin uso purgados del historial). Publicado en un repositorio público con licencia de <b style="color:var(--bone-100)">uso no comercial</b>.</p>
+      <div class="chips"><span class="chip">audit 20 agentes</span><span class="chip">XSS fix</span><span class="chip">dead-code</span><span class="chip">GitHub</span></div></div>
   </div>
 </section>
 
@@ -492,18 +506,18 @@
 <section id="security" class="wrap">
   <p class="eyebrow">Defensa en profundidad</p>
   <h2 class="title">Capas de seguridad</h2>
-  <p class="section-lede">Las partes valiosas —dinero, cuentas, archivos— protegidas por especialistas (Clerk, Stripe) y patrones endurecidos, verificadas por dos revisiones adversarias multi-agente.</p>
+  <p class="section-lede">Las partes valiosas —dinero, cuentas, archivos— protegidas por especialistas (Clerk, Stripe) y patrones endurecidos, verificadas por auditorías adversarias multi-agente.</p>
   <div class="seclayers">
-    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2l7 4v6c0 5-3 8-7 10-4-2-7-5-7-10V6z"/></svg></span><span class="rowtxt"><b>Autenticación & autorización</b><span>Clerk gestiona contraseñas/sesiones · gate de admin en servidor (revisado adversariamente)</span></span></div>
-    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 12h16M4 6h16M4 18h10"/></svg></span><span class="rowtxt"><b>Rate limiting durable</b><span>Backend en Supabase (sobrevive a serverless) · por ruta, con fail-open a memoria</span></span></div>
-    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/></svg></span><span class="rowtxt"><b>CSP + cabeceras de seguridad</b><span>Content-Security-Policy con allow-list · HSTS · X-Frame-Options · Permissions-Policy</span></span></div>
-    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 12l2 2 4-4M12 3l8 4v5c0 5-3.5 7.5-8 9"/></svg></span><span class="rowtxt"><b>Validación de entrada (zod)</b><span>Todas las rutas de escritura validadas y acotadas antes de tocar la BD</span></span></div>
-    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 10V7a6 6 0 0112 0v3M5 10h14v10H5z"/></svg></span><span class="rowtxt"><b>Protección del contenido</b><span>Ebooks solo en bucket privado · descarga por URL firmada de 120s tras comprobar propiedad</span></span></div>
-    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg></span><span class="rowtxt"><b>Subidas verificadas + pagos idempotentes</b><span>Portadas validadas por magic-bytes · webhooks idempotentes (Stripe reintenta sin duplicar)</span></span></div>
+    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2l7 4v6c0 5-3 8-7 10-4-2-7-5-7-10V6z"/></svg></span><span class="rowtxt"><b>Autenticación & autorización</b><span>Clerk gestiona contraseñas/sesiones · gate de admin en servidor · /checkout, /biblioteca y /admin protegidas por middleware</span></span></div>
+    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/></svg></span><span class="rowtxt"><b>Pagos server-authoritative</b><span>El precio se recalcula en el servidor (nunca se confía en el cliente) · webhook con firma verificada · fulfillment idempotente y atado al usuario correcto</span></span></div>
+    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 12h16M4 6h16M4 18h10"/></svg></span><span class="rowtxt"><b>Rate limiting durable</b><span>Backend atómico en Supabase (sobrevive a serverless) · por usuario/IP en checkout, descarga, boletín y entitlements</span></span></div>
+    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 12l2 2 4-4M12 3l8 4v5c0 5-3.5 7.5-8 9"/></svg></span><span class="rowtxt"><b>Escape de salida (XSS)</b><span>JSON-LD y HTML de correo escapados en el sink · <code>&lt;/script&gt;</code> imposible de romper · validación zod en toda escritura</span></span></div>
+    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/></svg></span><span class="rowtxt"><b>CSP + cabeceras de seguridad</b><span>Content-Security-Policy con allow-list · HSTS preload · X-Frame-Options · Referrer-Policy · Permissions-Policy</span></span></div>
+    <div class="layer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 10V7a6 6 0 0112 0v3M5 10h14v10H5z"/></svg></span><span class="rowtxt"><b>Protección del contenido</b><span>Ebooks solo en bucket privado · descarga por URL firmada de 120s tras comprobar propiedad · la ruta del archivo nunca llega al navegador</span></span></div>
   </div>
   <div class="review-note">
-    <div class="card"><span class="big">21</span><b>agentes de revisión</b><p>Dos auditorías adversarias multi-agente (13 + 8 agentes) sobre pagos y autorización de admin.</p></div>
-    <div class="card"><span class="big">0</span><b>fugas de datos</b><p>Verificado: el mapeo de libros al cliente lista campos explícitos — la ruta privada del archivo nunca llega al navegador.</p></div>
+    <div class="card"><span class="big">68</span><b>agentes de revisión</b><p>Cinco auditorías adversarias multi-agente sobre pagos, autorización, XSS/inyección, secretos y rate limiting — cada hallazgo verificado antes de aceptarse.</p></div>
+    <div class="card"><span class="big">0</span><b>fugas de datos</b><p>Verificado: el mapeo de libros al cliente lista campos explícitos — la ruta privada del archivo nunca sale del servidor. El único XSS real hallado fue corregido y desplegado.</p></div>
   </div>
 </section>
 
@@ -511,32 +525,33 @@
 <section id="tests" class="wrap">
   <p class="eyebrow">Calidad</p>
   <h2 class="title">Tests & integración continua</h2>
-  <p class="section-lede">19 tests en verde. Unitarios sobre la lógica pura, E2E sobre el recorrido de compra en un navegador real — todo verificado en cada push.</p>
+  <p class="section-lede">39 tests en verde. Unitarios sobre la lógica pura, E2E sobre el recorrido de compra en un navegador real — todo verificado en cada push.</p>
   <div class="testcols">
     <div class="testcol">
-      <h4>Unitarios · Vitest <span class="badge2">11 ✓</span></h4>
+      <h4>Unitarios · Vitest <span class="badge2">30 ✓</span></h4>
       <ul>
-        <li>lookup por id y por slug</li>
-        <li>libros gratis (precio 0)</li>
-        <li>destacados (con fallback)</li>
-        <li>filtro por categoría</li>
-        <li>relacionados (misma categoría, excluye actual)</li>
-        <li>búsqueda (título + tags, sin distinción de mayúsculas)</li>
-        <li>orden por precio (asc/desc)</li>
-        <li>orden por valoración y por año</li>
+        <li>lookup por id y por slug · gratis · destacados</li>
+        <li>filtro por categoría · relacionados</li>
+        <li>búsqueda (título + tags) · ordenación</li>
         <li>sin mutación del array de entrada</li>
-        <li>formato de precio (EUR es-ES)</li>
-        <li>formato de fecha (es-ES)</li>
+        <li>packs: <code>bundleFor</code> por umbral (3, 5)</li>
+        <li>mejor combinación: 4 = pack 3 + 1 (sin 4º gratis)</li>
+        <li>colección de 5 · 6 = pack 5 + 1</li>
+        <li>nunca cobra más que por separado</li>
+        <li>etiqueta de oferta correcta</li>
+        <li><code>safeJsonLd</code> escapa <code>&lt;/script&gt;</code></li>
+        <li>formato de precio y fecha (es-ES)</li>
       </ul>
     </div>
     <div class="testcol">
-      <h4>E2E · Playwright <span class="badge2">8 ✓</span></h4>
+      <h4>E2E · Playwright <span class="badge2">9 ✓</span></h4>
       <ul>
         <li>la home renderiza el hero</li>
         <li>el catálogo lista 6 libros</li>
         <li>la búsqueda filtra correctamente</li>
         <li>el filtro por categoría acota</li>
-        <li>ficha de libro: título, precio, sinopsis</li>
+        <li>ficha de libro de pago: título, 4,99 €, sinopsis</li>
+        <li>ficha del libro gratis muestra «Gratis»</li>
         <li>añadir al carrito → aparece en /carrito</li>
         <li>el consentimiento de cookies se acepta</li>
         <li>página legal + página de gratis</li>
@@ -556,18 +571,19 @@
 <!-- DEPLOY -->
 <section id="deploy" class="wrap">
   <p class="eyebrow">Producción</p>
-  <h2 class="title">Despliegue</h2>
+  <h2 class="title">Despliegue & repositorio</h2>
   <div class="deploybox">
     <div class="u">
-      <a href="https://archivos-oscuros-next.vercel.app" target="_blank" rel="noopener">archivos-oscuros-next.vercel.app</a>
-      <span>Vercel · producción · URL auto-derivada de la plataforma · imágenes en AVIF · cabeceras de seguridad activas</span>
+      <a href="https://www.archivososcuros.com" target="_blank" rel="noopener">www.archivososcuros.com</a>
+      <span>Vercel · producción · dominio propio · Clerk producción · Stripe en vivo · Resend · imágenes en AVIF · cabeceras de seguridad activas</span>
+      <span style="margin-top:8px">Repositorio: <a href="https://github.com/stevensitosava/archivos-oscuros-next" target="_blank" rel="noopener" style="color:var(--ember-300)">github.com/stevensitosava/archivos-oscuros-next</a> · público · licencia de uso no comercial</span>
     </div>
-    <a class="deploybtn" href="https://archivos-oscuros-next.vercel.app" target="_blank" rel="noopener">Abrir la tienda ↗</a>
+    <a class="deploybtn" href="https://www.archivososcuros.com" target="_blank" rel="noopener">Abrir la tienda ↗</a>
   </div>
 </section>
 
 <footer class="wrap">
-  <span><b>Archivos Oscuros</b> — dossier del proyecto · Next.js 16 · Supabase · Stripe · Clerk · Vercel</span>
+  <span><b>Archivos Oscuros</b> — dossier del proyecto · Next.js 16 · Supabase · Stripe · Clerk · Resend · Vercel</span>
   <span>Estoicismo · Historia · Guerreros</span>
 </footer>
 

@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 /**
  * Storefront E2E — the critical browse → cart journey, no auth required.
- * Deterministic against the seeded 6-book catalog (same in demo + real mode).
+ * Deterministic against the seeded 9-book catalog (same in demo + real mode).
  */
 
 test("homepage renders the hero", async ({ page }) => {
@@ -13,7 +13,7 @@ test("homepage renders the hero", async ({ page }) => {
 
 test("catalog lists books and search filters them", async ({ page }) => {
   await page.goto("/catalogo");
-  await expect(page.locator("article")).toHaveCount(6);
+  await expect(page.locator("article")).toHaveCount(9);
 
   await page.getByPlaceholder(/buscar/i).fill("samurái");
   await expect(page.locator("article")).toHaveCount(1);
@@ -23,7 +23,7 @@ test("catalog lists books and search filters them", async ({ page }) => {
 test("category filter narrows the catalog", async ({ page }) => {
   await page.goto("/catalogo");
   await page.getByRole("button", { name: "Guerreros" }).click();
-  await expect(page.locator("article")).toHaveCount(2); // El Código del Guerrero + La Mente del Samurái
+  await expect(page.locator("article")).toHaveCount(4); // Código del Guerrero, Mente del Samurái, Código Templario, Vía de la Sombra
   await expect(page.getByRole("article").first()).toContainText(/Guerrero|Samurái/i);
 });
 

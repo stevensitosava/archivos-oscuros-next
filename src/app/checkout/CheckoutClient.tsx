@@ -10,7 +10,8 @@ import { useBooks } from "@/components/BooksProvider";
 import { isStripeConfigured, isSupabaseConfigured } from "@/lib/env";
 import { grantDemoOwnership } from "@/lib/demo-library";
 import { paidTotal, nextBundleHint, offerLabel } from "@/data/bundles";
-import { formatPrice } from "@/lib/format";
+import { formatMoney, isLocal } from "@/lib/money";
+import { useLocale } from "@/components/LocaleProvider";
 import { trackEvent } from "@/lib/analytics";
 import { confirmDevPurchase } from "./actions";
 import Price from "@/components/Price";
@@ -20,6 +21,7 @@ export default function CheckoutClient() {
   const router = useRouter();
   const { lines } = useCart();
   const allBooks = useBooks();
+  const loc = useLocale();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [acceptTerms, setAcceptTerms] = useState(false);
@@ -111,7 +113,7 @@ export default function CheckoutClient() {
               {offerLabel(paid.length, bundle)} · {paid.length} libros
             </span>
             <span className="shrink-0 font-mono text-sm" style={{ fontFamily: "var(--font-mono)" }}>
-              −{formatPrice(savings, currency)}
+              −{formatMoney(savings, loc)}
             </span>
           </li>
         )}
@@ -123,11 +125,17 @@ export default function CheckoutClient() {
         </li>
       </ul>
 
+      {isLocal(loc) && (
+        <p className="mt-3 text-[0.8rem] text-ash-500">
+          Precios mostrados en tu moneda ({loc.currency}). El pago se procesa de forma segura y se convierte automáticamente en el checkout.
+        </p>
+      )}
+
       {hint && (
         <p className="mt-3 flex items-center gap-2 rounded-md border border-ember-500/25 bg-ember-500/[0.06] px-4 py-2.5 text-[0.82rem] leading-snug text-ember-200/90">
           <Sigil motif="key" className="w-3.5 shrink-0 text-ember-400" weight={1.8} />
           Añade {hint.needed} {hint.needed === 1 ? "libro" : "libros"} más y llévate «{hint.tier.label}» por{" "}
-          {formatPrice(hint.tier.priceCents, currency)}.
+          {formatMoney(hint.tier.priceCents, loc)}.
         </p>
       )}
 

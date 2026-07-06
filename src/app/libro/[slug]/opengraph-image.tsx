@@ -1,11 +1,19 @@
 import { ImageResponse } from "next/og";
-import { getBookBySlug } from "@/lib/books-data";
+import { getAllBooks, getBookBySlug } from "@/lib/books-data";
 import { CATEGORIES } from "@/types";
 
 export const runtime = "nodejs";
+// Pre-render one card per book AT BUILD TIME so it's served instantly from the
+// CDN. Social scrapers (WhatsApp/Facebook/…) have a short fetch timeout; an
+// on-demand (cold-start) image can miss it and get cached as "no image".
+export const dynamic = "force-static";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "Archivos Oscuros";
+
+export async function generateStaticParams() {
+  return (await getAllBooks()).map((b) => ({ slug: b.slug }));
+}
 
 /** Per-book social card — on-brand (near-black + ember), generated at build. */
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {

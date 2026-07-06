@@ -3,6 +3,7 @@ import { unstable_cache } from "next/cache";
 import { getServiceSupabase } from "./supabase-server";
 import { BOOKS } from "@/data/catalog";
 import { activeSale } from "@/data/sales";
+import { getRatingAggregates } from "./reviews";
 import type { Book } from "@/types";
 
 /* ============================================================
@@ -78,9 +79,15 @@ const cachedPublishedBooks = unstable_cache(fetchPublishedBooks, ["published-boo
   revalidate: 300,
 });
 
-/** All published books, with any active flash sale applied at read time. */
+/** All published books, with any active flash sale + real rating aggregates
+ *  applied at read time. Aggregates are separately tagged so a new review
+ *  refreshes the stars without busting the whole book cache. */
 export async function getAllBooks(): Promise<Book[]> {
-  return (await cachedPublishedBooks()).map(applySale);
+  const [books, aggs] = await Promise.all([cachedPublishedBooks(), getRatingAggregates()]);
+  return books.map(applySale).map((b) => {
+    const a = aggs[b.id];
+    return { ...b, ratingAvg: a ? a.avg : null, ratingCount: a ? a.count : 0 };
+  });
 }
 
 export async function getBookBySlug(slug: string): Promise<Book | undefined> {

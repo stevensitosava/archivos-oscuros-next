@@ -79,7 +79,18 @@ export default function Footer() {
       <div className="border-t border-bone-100/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-5 py-6 text-center sm:flex-row sm:text-left sm:px-8">
           <p className="meta">© {new Date().getFullYear()} ARCHIVOS OSCUROS</p>
-          <p className="meta text-ash-400">Hecho y diseñado por Steven y Alberto</p>
+          <p className="meta text-ash-400">
+            Hecho y diseñado por{" "}
+            <a
+              href="https://www.stevensawarin.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-bone-200 underline decoration-ash-600 underline-offset-2 transition-colors hover:text-gold-300"
+            >
+              Steven
+            </a>{" "}
+            y Alberto
+          </p>
           <p className="meta text-ash-500">Pagos seguros con Stripe · Entrega inmediata</p>
         </div>
       </div>

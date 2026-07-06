@@ -14,7 +14,10 @@ insert into public.books (id, slug, title, author, category, price_cents, curren
   ('ao-003', 'el-manual-del-legionario-romano', 'El Manual del Legionario Romano', 'Archivos Oscuros', 'historia',   499, 'EUR', 'ao-003.pdf'),
   ('ao-004', 'la-filosofia-vikinga',            'La Filosofía Vikinga',            'Archivos Oscuros', 'filosofia',  499, 'EUR', 'ao-004.pdf'),
   ('ao-005', 'la-mente-del-samurai',            'La Mente del Samurái',            'Archivos Oscuros', 'guerreros',  499, 'EUR', 'ao-005.pdf'),
-  ('ao-006', 'sangre-espartana',                'Sangre Espartana',                'Archivos Oscuros', 'historia',   499, 'EUR', 'ao-006.pdf')
+  ('ao-006', 'sangre-espartana',                'Sangre Espartana',                'Archivos Oscuros', 'historia',   499, 'EUR', 'ao-006.pdf'),
+  ('ao-007', 'el-codigo-templario',             'El Código Templario',             'Archivos Oscuros', 'guerreros',  499, 'EUR', 'ao-007.pdf'),
+  ('ao-008', 'la-via-de-la-sombra',             'La Vía de la Sombra',             'Archivos Oscuros', 'guerreros',  499, 'EUR', 'ao-008.pdf'),
+  ('ao-009', 'sangre-en-la-arena',              'Sangre en la Arena',              'Archivos Oscuros', 'historia',   499, 'EUR', 'ao-009.pdf')
 on conflict (id) do update set
   slug = excluded.slug,
   title = excluded.title,

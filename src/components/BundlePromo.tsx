@@ -4,7 +4,8 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BUNDLE_TIERS } from "@/data/bundles";
-import { formatPrice } from "@/lib/format";
+import { formatMoney } from "@/lib/money";
+import { useLocale } from "@/components/LocaleProvider";
 import { useBooks } from "@/components/BooksProvider";
 import { useCart } from "@/store/cart";
 import { useEntitlements } from "@/components/EntitlementsProvider";
@@ -63,8 +64,9 @@ function SavingsBadge({ pct }: { pct: number }) {
 
 /* ───────────────────────── full ───────────────────────── */
 
-function FullPromo() {
+function FullPromo({ onCatalog = false }: { onCatalog?: boolean }) {
   const router = useRouter();
+  const loc = useLocale();
   const { paid, tiers, ownsAll, allInCart, addAll, quickAddAll, compareFor } = useOffer();
   const [added, setAdded] = useState(false);
   if (paid.length < 3) return null;
@@ -82,6 +84,11 @@ function FullPromo() {
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   };
+
+  // On /catalogo the "choose titles" links go nowhere (already here), so scroll
+  // down to the search/filter grid where the user actually picks their books.
+  const scrollToGrid = () =>
+    document.getElementById("catalogo-explorar")?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
     <div className="panel relative overflow-hidden">
@@ -115,7 +122,14 @@ function FullPromo() {
             Llévate más, <span className="text-ember-300">paga menos</span>.
           </h2>
           <p className="mt-3 max-w-md text-[0.98rem] leading-relaxed text-ash-400">
-            Combina los títulos que quieras — el descuento se aplica solo en el carrito, sin códigos.
+            Combina los títulos que quieras del catálogo — sin cupones ni pasos extra.
+          </p>
+          <p className="mt-3 flex max-w-md items-start gap-2 text-[0.9rem] leading-relaxed text-bone-200">
+            <span aria-hidden="true" className="mt-[3px] shrink-0 text-ember-300">✦</span>
+            <span>
+              Añade <b className="font-semibold text-bone-50">3 o 5 títulos</b> al carrito y el precio del
+              pack se aplica <b className="font-semibold text-bone-50">automáticamente</b>.
+            </span>
           </p>
         </div>
 
@@ -149,11 +163,11 @@ function FullPromo() {
                     className="text-[1.9rem] font-semibold leading-none text-gold-300 tabular-nums"
                     style={{ fontFamily: "var(--font-mono)" }}
                   >
-                    {formatPrice(t.priceCents)}
+                    {formatMoney(t.priceCents, loc)}
                   </span>
                   {compare > t.priceCents && (
                     <span className="text-[0.95rem] text-ash-500 line-through tabular-nums" style={{ fontFamily: "var(--font-mono)" }}>
-                      {formatPrice(compare)}
+                      {formatMoney(compare, loc)}
                     </span>
                   )}
                 </div>
@@ -179,6 +193,15 @@ function FullPromo() {
                             ? "Ir al carrito"
                             : `Añadir los ${t.minBooks} al carrito`}
                     </button>
+                  ) : onCatalog ? (
+                    // Already on the catalog → scroll to the grid instead of a dead link.
+                    <button
+                      type="button"
+                      onClick={scrollToGrid}
+                      className={`btn w-full !px-4 !py-3 !text-[0.7rem] ${isCollection ? "btn-ember" : "btn-ghost"}`}
+                    >
+                      {isCollection ? `Elige tus ${t.minBooks} abajo ↓` : "Elige tus títulos abajo ↓"}
+                    </button>
                   ) : isCollection ? (
                     <Link href="/catalogo" className="btn btn-ember w-full !px-4 !py-3 !text-[0.7rem]">
                       Elegir mis {t.minBooks}
@@ -202,12 +225,13 @@ function FullPromo() {
 
 function StripPromo() {
   const router = useRouter();
+  const loc = useLocale();
   const { paid, tiers, ownsAll, allInCart, addAll, quickAddAll } = useOffer();
   const [added, setAdded] = useState(false);
   if (paid.length < 3) return null;
 
   const summary = tiers
-    .map((t) => `${t.minBooks} por ${formatPrice(t.priceCents)}`)
+    .map((t) => `${t.minBooks} por ${formatMoney(t.priceCents, loc)}`)
     .join(" · ");
 
   const handle = () => {
@@ -250,6 +274,13 @@ function StripPromo() {
   );
 }
 
-export default function BundlePromo({ variant = "full" }: { variant?: "full" | "strip" }) {
-  return variant === "strip" ? <StripPromo /> : <FullPromo />;
+export default function BundlePromo({
+  variant = "full",
+  onCatalog = false,
+}: {
+  variant?: "full" | "strip";
+  /** When rendered on /catalogo, CTAs scroll to the grid instead of linking here. */
+  onCatalog?: boolean;
+}) {
+  return variant === "strip" ? <StripPromo /> : <FullPromo onCatalog={onCatalog} />;
 }

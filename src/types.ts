@@ -66,6 +66,10 @@ export interface Book {
   originalPriceCents?: number;
   /** ISO end time of the active flash sale (drives the countdown). Read-time. */
   saleEndsAt?: string;
+  /** Average of REAL verified-buyer ratings. Null until the first review exists. */
+  ratingAvg?: number | null;
+  /** Number of verified-buyer ratings. 0 until someone rates. */
+  ratingCount?: number;
 }
 
 /** A line in the shopping cart. Ebooks are unique, qty is always 1, kept for shape. */

@@ -21,21 +21,32 @@ export default async function CatalogoPage() {
   // full list without executing the client-filtered grid.
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: "Catálogo · Archivos Oscuros",
-    url: `${SITE_URL}/catalogo`,
-    inLanguage: "es",
-    isPartOf: { "@id": `${SITE_URL}/#website` },
-    mainEntity: {
-      "@type": "ItemList",
-      numberOfItems: books.length,
-      itemListElement: books.map((b, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        url: `${SITE_URL}/libro/${b.slug}`,
-        name: b.title,
-      })),
-    },
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        name: "Catálogo · Archivos Oscuros",
+        url: `${SITE_URL}/catalogo`,
+        inLanguage: "es",
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        mainEntity: {
+          "@type": "ItemList",
+          numberOfItems: books.length,
+          itemListElement: books.map((b, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            url: `${SITE_URL}/libro/${b.slug}`,
+            name: b.title,
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Inicio", item: `${SITE_URL}/` },
+          { "@type": "ListItem", position: 2, name: "Catálogo", item: `${SITE_URL}/catalogo` },
+        ],
+      },
+    ],
   };
 
   return (

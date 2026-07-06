@@ -7,11 +7,12 @@ import { getAllBooks, getBookBySlug } from "@/lib/books-data";
 import { SITE_URL } from "@/lib/env";
 import { safeJsonLd } from "@/lib/jsonld";
 import ProceduralCover from "@/components/ProceduralCover";
-import RatingStars from "@/components/RatingStars";
 import SectionHeading from "@/components/SectionHeading";
 import BookCard from "@/components/BookCard";
 import Sigil from "@/components/Sigil";
 import BundlePromo from "@/components/BundlePromo";
+import RatingDisplay from "@/components/RatingDisplay";
+import ReviewForm from "@/components/ReviewForm";
 import BuyActions from "./BuyActions";
 
 type Params = { slug: string };
@@ -74,6 +75,18 @@ export default async function LibroDetalle({ params }: { params: Promise<Params>
         ...(coverUrl ? { image: coverUrl } : {}),
         url: `${SITE_URL}/libro/${book.slug}`,
         publisher: { "@type": "Organization", name: "Archivos Oscuros" },
+        // Only emitted once REAL verified-buyer reviews exist — never fabricated.
+        ...(book.ratingCount && book.ratingCount > 0 && book.ratingAvg
+          ? {
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: book.ratingAvg.toFixed(1),
+                reviewCount: book.ratingCount,
+                bestRating: 5,
+                worstRating: 1,
+              },
+            }
+          : {}),
         offers: {
           "@type": "Offer",
           price: (book.priceCents / 100).toFixed(2),
@@ -122,9 +135,11 @@ export default async function LibroDetalle({ params }: { params: Promise<Params>
             <h1 className="mt-4 text-[clamp(2.4rem,5vw,4rem)] leading-[1.02]">{book.title}</h1>
             <p className="mt-2 text-lg italic text-ash-400">{book.author}</p>
 
-            <div className="mt-5">
-              <RatingStars rating={book.rating} showValue />
-            </div>
+            {/* Real verified-buyer rating (renders nothing until reviews exist) */}
+            <RatingDisplay avg={book.ratingAvg} count={book.ratingCount} showValue className="mt-5 text-[1.1rem]" />
+            {!book.ratingCount && (
+              <p className="mt-5 text-[0.88rem] text-ash-500">Aún sin valoraciones.</p>
+            )}
 
             {/* Meta chips */}
             <div className="mt-7 flex flex-wrap gap-2.5">
@@ -166,6 +181,9 @@ export default async function LibroDetalle({ params }: { params: Promise<Params>
                 ))}
               </div>
             )}
+
+            {/* Verified-buyer rating widget (owners only) */}
+            <ReviewForm bookId={book.id} hasReviews={Boolean(book.ratingCount)} />
           </div>
         </div>
       </section>
