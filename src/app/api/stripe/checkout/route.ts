@@ -4,7 +4,7 @@ import { z } from "zod";
 import type { Book } from "@/types";
 import { stripe, isStripeServerConfigured } from "@/lib/stripe-server";
 import { getBookById } from "@/lib/books-data";
-import { createOrder, grantEntitlement, getOwnedBookIds, subscribeNewsletter } from "@/lib/db";
+import { createOrder, grantEntitlement, getOwnedBookIds, subscribeNewsletter, sendFreeClaimEmail } from "@/lib/db";
 import { paidTotal, offerLabel } from "@/data/bundles";
 import { rateLimit } from "@/lib/ratelimit";
 
@@ -78,9 +78,21 @@ export async function POST(req: NextRequest) {
   const origin = req.nextUrl.origin;
   const paid = books.filter((b) => b.priceCents > 0);
 
-  // Free-only cart → no payment; grant directly.
+  // Free-only cart → no payment; grant directly. Same lead-magnet fulfillment
+  // as /api/download's first-claim path (newsletter + delivery email) — this
+  // branch IS a free claim, just reached through the cart instead. A later
+  // /api/download can't double-send: the book is owned by then.
   if (paid.length === 0) {
-    for (const b of books) await grantEntitlement(userId, b.id, null);
+    let anyGranted = false;
+    for (const b of books) anyGranted = (await grantEntitlement(userId, b.id, null)) || anyGranted;
+    if (email && anyGranted) {
+      try {
+        await subscribeNewsletter(email, "free-book", true);
+        await sendFreeClaimEmail(email, books.map((b) => b.title).join("», «"));
+      } catch (e) {
+        console.warn("[checkout] free-claim fulfillment failed:", e instanceof Error ? e.message : e);
+      }
+    }
     return NextResponse.json({ url: `${origin}/compra/exito` });
   }
 

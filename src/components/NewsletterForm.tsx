@@ -6,7 +6,16 @@ import { trackEvent } from "@/lib/analytics";
 
 type State = "idle" | "loading" | "ok" | "exists" | "error";
 
-export default function NewsletterForm() {
+export default function NewsletterForm({
+  source = "footer",
+  eyebrow = "El boletín",
+  blurb = "Lanzamientos, libros gratis ocasionales y nada de ruido.",
+}: {
+  /** Placement id reported to analytics (footer, home-mid, libro…). */
+  source?: string;
+  eyebrow?: string;
+  blurb?: string;
+}) {
   const [email, setEmail] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [marketing, setMarketing] = useState(false);
@@ -29,7 +38,7 @@ export default function NewsletterForm() {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, consent: true }),
+        body: JSON.stringify({ email, consent: true, source }),
       });
       const body = (await res.json().catch(() => ({}))) as { ok?: boolean; status?: string; error?: string };
       if (res.ok && body.ok) {
@@ -40,7 +49,7 @@ export default function NewsletterForm() {
           setState("ok");
           setMsg("¡Listo! Te avisaremos de cada lanzamiento.");
           setEmail("");
-          trackEvent("newsletter_signup", { source: "footer" });
+          trackEvent("newsletter_signup", { source });
         }
       } else if (res.status === 429) {
         setState("error");
@@ -59,10 +68,8 @@ export default function NewsletterForm() {
 
   return (
     <div className="max-w-md">
-      <p className="eyebrow mb-2">El boletín</p>
-      <p className="text-[0.95rem] leading-relaxed text-ash-400">
-        Lanzamientos, libros gratis ocasionales y nada de ruido.
-      </p>
+      <p className="eyebrow mb-2">{eyebrow}</p>
+      <p className="text-[0.95rem] leading-relaxed text-ash-400">{blurb}</p>
 
       <form onSubmit={onSubmit} className="mt-4">
         <div className="flex flex-col gap-2 sm:flex-row">

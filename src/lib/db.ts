@@ -5,6 +5,7 @@ import { SITE_URL } from "./env";
 import { formatPrice } from "./format";
 import { sendEmail, renderEmail } from "./email";
 import { unsubscribeUrl } from "./unsubscribe";
+import { BUNDLE_TIERS } from "@/data/bundles";
 
 function escapeHtml(s: string): string {
   return s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] as string);
@@ -32,6 +33,31 @@ async function sendPurchaseEmail(email: string, bookIds: string[], totalCents: n
     cta: { label: "Descargar mis libros", url: `${SITE_URL}/biblioteca` },
   });
   await sendEmail({ to: email, subject: "Tu pedido — Archivos Oscuros", html });
+}
+
+/**
+ * Free-claim delivery email: confirms the book is in the buyer's library and
+ * pitches the packs (the conversion step of the lead-magnet funnel — the sale
+ * happens in the inbox days later, not on visit one). Replaces the generic
+ * welcome for source "free-book" claims. Best-effort.
+ */
+export async function sendFreeClaimEmail(email: string, bookTitle: string): Promise<void> {
+  const url = unsubscribeUrl(email);
+  const html = renderEmail({
+    preheader: `«${bookTitle}» ya está en tu biblioteca.`,
+    heading: "Tu libro te espera",
+    paragraphs: [
+      `«${escapeHtml(bookTitle)}» ya es tuyo — para siempre. Está guardado en tu Biblioteca, vuelve a descargarlo cuando quieras.`,
+      `Si te atrapa, el archivo guarda más: ${[...BUNDLE_TIERS]
+        .sort((a, b) => a.minBooks - b.minBooks)
+        .map((t) => `${t.minBooks} títulos por ${formatPrice(t.priceCents)}`)
+        .join(" o ")}. El descuento se aplica solo al añadirlos al carrito — sin cupones.`,
+    ],
+    cta: { label: "Ir a mi biblioteca", url: `${SITE_URL}/biblioteca` },
+    bodyHtml: `<p style="margin:14px 0 0;font-family:'Poppins',Arial,sans-serif;font-size:13px;line-height:1.6;color:#9a9aa1;"><a href="${SITE_URL}/catalogo" style="color:#c9a961;text-decoration:underline;">Explorar el catálogo completo →</a></p>`,
+    unsubscribeUrl: url,
+  });
+  await sendEmail({ to: email, subject: `Tu libro gratis — ${bookTitle}`, html, headers: { "List-Unsubscribe": `<${url}>` } });
 }
 
 /** Lead-magnet welcome with the free book + one-click unsubscribe. Best-effort. */
@@ -84,13 +110,16 @@ export async function ownsBook(userId: string, bookId: string): Promise<boolean>
 }
 
 /** Grant a download right (idempotent). Used by the Stripe webhook. */
+/** Returns true when the entitlement is actually in the DB — callers that
+ *  trigger side effects (e.g. the free-claim email) must gate on this so a
+ *  persistent write failure can't re-fire them on every retry. */
 export async function grantEntitlement(
   userId: string,
   bookId: string,
   orderId?: string | null,
-): Promise<void> {
+): Promise<boolean> {
   const sb = getServiceSupabase();
-  if (!sb || !userId) return;
+  if (!sb || !userId) return false;
   const { error } = await sb
     .from("entitlements")
     .upsert(
@@ -98,6 +127,7 @@ export async function grantEntitlement(
       { onConflict: "user_id,book_id", ignoreDuplicates: true },
     );
   if (error) console.warn("[db] grantEntitlement:", error.message);
+  return !error;
 }
 
 /** Private-bucket storage path for a book's ebook file. */
@@ -265,9 +295,11 @@ export async function subscribeNewsletter(
     console.warn("[db] subscribeNewsletter:", error.message);
     return "error";
   }
-  // First-time subscriber → welcome email (best-effort). Skipped for checkout,
-  // which already sends its own purchase confirmation.
-  if (source !== "checkout") {
+  // First-time subscriber → welcome email (best-effort). Skipped for checkout
+  // (purchase confirmation covers it) and free-book claims (the download route
+  // sends sendFreeClaimEmail — a welcome pointing at the book they just claimed
+  // would be a redundant double-send).
+  if (source !== "checkout" && source !== "free-book") {
     await sendWelcomeEmail(email);
   }
   return "ok";

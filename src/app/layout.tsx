@@ -8,6 +8,7 @@ import { CartProvider } from "@/store/cart";
 import { EntitlementsProvider } from "@/components/EntitlementsProvider";
 import { BooksProvider } from "@/components/BooksProvider";
 import { LocaleProvider } from "@/components/LocaleProvider";
+import SignupTracker from "@/components/SignupTracker";
 import Shell from "@/components/Shell";
 import { getAllBooks } from "@/lib/books-data";
 import { SITE_URL, isClerkConfigured } from "@/lib/env";
@@ -137,7 +138,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="es" className={poppins.variable}>
       {/* ClerkProvider lives INSIDE <body> (Clerk requirement); rendered only
           when Clerk keys are present so the app still runs in demo mode. */}
-      <body>{isClerkConfigured ? <ClerkProvider>{inner}</ClerkProvider> : inner}</body>
+      <body>
+        {isClerkConfigured ? (
+          <ClerkProvider>
+            {inner}
+            {/* Needs Clerk context — that's why it's inside the provider. */}
+            <SignupTracker />
+          </ClerkProvider>
+        ) : (
+          inner
+        )}
+      </body>
     </html>
   );
 }

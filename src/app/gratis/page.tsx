@@ -58,6 +58,24 @@ export default async function Gratis() {
         disponible — sin pagar, tuyo para siempre.
       </p>
 
+      {/* Why the account gate exists — spell out the value exchange BEFORE the
+          sign-in wall so it doesn't read as an arbitrary hoop. */}
+      <div className="panel mt-10 grid max-w-4xl grid-cols-1 gap-6 p-6 sm:grid-cols-3 sm:p-7">
+        {[
+          ["key", "1 · Crea tu cuenta gratis", "Un minuto, sin tarjeta. Solo tu correo."],
+          ["candle", "2 · Descarga el PDF", "Directo a tu dispositivo, completo y sin marcas."],
+          ["moon", "3 · Tuyo para siempre", "Queda en tu Biblioteca — y los próximos gratuitos llegan primero a quienes están dentro."],
+        ].map(([motif, title, body]) => (
+          <div key={title} className="flex gap-3.5">
+            <Sigil motif={motif as Parameters<typeof Sigil>[0]["motif"]} className="mt-0.5 w-6 shrink-0 text-gold-400" weight={1.6} />
+            <div>
+              <h2 className="text-[1.02rem] leading-snug text-bone-50">{title}</h2>
+              <p className="mt-1 text-[0.88rem] leading-relaxed text-ash-400">{body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
       {free.length > 0 ? (
         <div className="mt-12">
           <BookGrid books={free} />

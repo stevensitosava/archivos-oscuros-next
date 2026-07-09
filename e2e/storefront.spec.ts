@@ -68,3 +68,18 @@ test("gratis page shows the free title", async ({ page }) => {
   await expect(page.locator("article")).toHaveCount(1);
   await expect(page.locator("article")).toContainText("El Código del Guerrero");
 });
+
+test("paid book offers the sample preview and it opens", async ({ page }) => {
+  await page.goto("/libro/la-mente-del-samurai");
+  // Clear the cookie banner so it can't intercept the click.
+  await page.getByRole("dialog", { name: /cookies/i }).getByRole("button", { name: /aceptar todas/i }).click();
+  await page.getByRole("button", { name: /primeras páginas/i }).click();
+  const dialog = page.getByRole("dialog", { name: /vista previa/i });
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText("1 / 6");
+});
+
+test("home shows the mid-page newsletter capture", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByText("Un arma mental por semana")).toBeVisible();
+});

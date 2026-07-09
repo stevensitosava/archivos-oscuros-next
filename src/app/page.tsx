@@ -7,6 +7,7 @@ import BundlePromo from "@/components/BundlePromo";
 import FaqSection from "@/components/FaqSection";
 import CategoryReveal from "@/components/CategoryReveal";
 import DualWave from "@/components/DualWave";
+import NewsletterCta from "@/components/NewsletterCta";
 import SectionHeading from "@/components/SectionHeading";
 import Sigil from "@/components/Sigil";
 
@@ -46,6 +47,13 @@ export default async function Home() {
 
       {/* ───────────────── Disciplines (interactive reveal · hover/18) ───────────────── */}
       <CategoryReveal />
+
+      {/* ───────────────── Email capture (second net for the not-ready) ───────────────── */}
+      <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
+        <Reveal>
+          <NewsletterCta source="home-mid" />
+        </Reveal>
+      </section>
 
       {/* ───────────────── Dual-wave book index (scroll/31) ───────────────── */}
       <DualWave books={books} />

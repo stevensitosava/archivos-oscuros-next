@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { ownsBook, getBookStoragePath, grantEntitlement, subscribeNewsletter } from "@/lib/db";
+import { ownsBook, getBookStoragePath, grantEntitlement, subscribeNewsletter, sendFreeClaimEmail } from "@/lib/db";
 import { getServiceSupabase, isServiceSupabaseConfigured } from "@/lib/supabase-server";
 import { getBookById } from "@/lib/books-data";
 import { rateLimit, clientIp } from "@/lib/ratelimit";
@@ -9,18 +9,21 @@ export const runtime = "nodejs";
 
 /**
  * Lead-magnet funnel: the first time someone claims a FREE book, add their email
- * to the newsletter (source "free-book"). Best-effort — a subscribe failure must
- * never block the download. This is what turns free downloads into a mailing list.
+ * to the newsletter (source "free-book") and send the delivery email with the
+ * pack pitch. Best-effort — a failure here must never block the download. This
+ * is what turns free downloads into a mailing list and, later, into buyers.
  */
-async function autoSubscribeFreeClaim() {
+async function fulfillFreeClaim(bookTitle: string) {
   try {
     const user = await currentUser();
     const email =
       user?.emailAddresses.find((e) => e.id === user.primaryEmailAddressId)?.emailAddress ??
       user?.emailAddresses[0]?.emailAddress;
-    if (email) await subscribeNewsletter(email, "free-book", true);
+    if (!email) return;
+    await subscribeNewsletter(email, "free-book", true);
+    await sendFreeClaimEmail(email, bookTitle);
   } catch (e) {
-    console.warn("[download] free-claim newsletter subscribe failed:", e instanceof Error ? e.message : e);
+    console.warn("[download] free-claim fulfillment failed:", e instanceof Error ? e.message : e);
   }
 }
 
@@ -89,9 +92,11 @@ export async function GET(req: NextRequest) {
   // Must own it — EXCEPT free books, which are claimed on first download.
   if (!(await ownsBook(userId, bookId))) {
     if (book && book.priceCents === 0) {
-      await grantEntitlement(userId, bookId, null);
-      // First-time free claim → feed the newsletter funnel (best-effort).
-      await autoSubscribeFreeClaim();
+      const granted = await grantEntitlement(userId, bookId, null);
+      // First-time free claim → newsletter + delivery email (best-effort).
+      // Gated on the grant: a persistent write failure must not re-send the
+      // email on every retry click.
+      if (granted) await fulfillFreeClaim(book.title);
     } else {
       return NextResponse.json({ error: "No posees este libro." }, { status: 403 });
     }

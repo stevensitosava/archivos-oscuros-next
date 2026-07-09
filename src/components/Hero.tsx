@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
+import { trackEvent } from "@/lib/analytics";
 
 /** Local hero loop in /public. Swap the file to change the background. */
 const HERO_VIDEO = "/hero-video.mp4";
@@ -148,20 +149,29 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.9, ease: "easeOut" }}
-            className="flex flex-wrap items-center justify-center gap-3 sm:justify-end"
+            className="flex flex-col items-center gap-2.5 sm:items-end"
           >
-            <Link
-              href="/gratis"
-              className="liquid-glass inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium uppercase tracking-[0.18em] text-white/90 sm:py-4"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-ember-500" aria-hidden="true" /> Gratis
-            </Link>
-            <Link
-              href="/catalogo"
-              className="liquid-glass inline-block rounded-full px-6 py-3.5 text-sm font-medium uppercase tracking-[0.18em] text-white/90 sm:px-8 sm:py-4 sm:tracking-[0.2em]"
-            >
-              Entra en el archivo
-            </Link>
+            {/* Free book is the PRIMARY ask for a first visit — cold traffic
+                won't buy on day one, but it will take a free book. */}
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-end">
+              <Link
+                href="/gratis"
+                onClick={() => trackEvent("hero_cta_click", { cta: "gratis" })}
+                className="inline-flex items-center gap-2 rounded-full bg-ember-500 px-6 py-3.5 text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-[0_8px_30px_rgba(178,52,42,0.45)] transition-colors hover:bg-ember-400 sm:py-4"
+              >
+                Libro gratis
+              </Link>
+              <Link
+                href="/catalogo"
+                onClick={() => trackEvent("hero_cta_click", { cta: "catalogo" })}
+                className="liquid-glass inline-block rounded-full px-6 py-3.5 text-sm font-medium uppercase tracking-[0.18em] text-white/90 sm:px-8 sm:py-4 sm:tracking-[0.2em]"
+              >
+                Entra en el archivo
+              </Link>
+            </div>
+            <p className="text-[0.7rem] uppercase tracking-[0.16em] text-white/55" style={{ fontFamily: "var(--font-ritual)" }}>
+              Sin tarjeta · Tuyo en 1 minuto
+            </p>
           </motion.div>
         </div>
       </div>

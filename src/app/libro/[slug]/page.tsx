@@ -11,8 +11,11 @@ import SectionHeading from "@/components/SectionHeading";
 import BookCard from "@/components/BookCard";
 import Sigil from "@/components/Sigil";
 import BundlePromo from "@/components/BundlePromo";
+import NewsletterCta from "@/components/NewsletterCta";
 import RatingDisplay from "@/components/RatingDisplay";
 import ReviewForm from "@/components/ReviewForm";
+import SamplePreview from "@/components/SamplePreview";
+import samples from "@/data/samples.json";
 import BuyActions from "./BuyActions";
 
 type Params = { slug: string };
@@ -51,6 +54,7 @@ export default async function LibroDetalle({ params }: { params: Promise<Params>
   const categoryLabel = CATEGORIES.find((c) => c.slug === book.category)?.label ?? book.category;
   const paragraphs = book.synopsis.split("\n\n").filter(Boolean);
   const related = relatedTo(await getAllBooks(), book);
+  const sampleCount = (samples as Record<string, number>)[book.slug] ?? 0;
   const chips = [book.formats.join(" · "), `${book.pages} p.`, String(book.year), book.language];
 
   const coverUrl = book.cover.image
@@ -157,6 +161,11 @@ export default async function LibroDetalle({ params }: { params: Promise<Params>
             {/* Price + actions (client) */}
             <BuyActions book={book} />
 
+            {/* "Look inside" — paid books with extracted sample pages only */}
+            {book.priceCents > 0 && sampleCount > 0 && (
+              <SamplePreview book={book} pages={sampleCount} />
+            )}
+
             {/* Bundle offers — the upsell that makes 4,99 € books add up */}
             <BundlePromo variant="strip" />
 
@@ -186,6 +195,11 @@ export default async function LibroDetalle({ params }: { params: Promise<Params>
             <ReviewForm bookId={book.id} hasReviews={Boolean(book.ratingCount)} />
           </div>
         </div>
+      </section>
+
+      {/* ───────────────── Email capture ───────────────── */}
+      <section className="mx-auto max-w-7xl px-5 pb-20 sm:px-8">
+        <NewsletterCta source="libro" />
       </section>
 
       {/* ───────────────── Related ───────────────── */}

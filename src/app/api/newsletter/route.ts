@@ -13,6 +13,8 @@ const Schema = z.object({
     .max(254)
     .regex(/^[^@\s]+@[^@\s]+\.[^@\s]+$/, "Email inválido"),
   consent: z.boolean().optional(),
+  /** Placement attribution — whitelisted so the DB can't be fed junk. */
+  source: z.enum(["footer", "home-mid", "libro"]).optional(),
 });
 
 /** POST /api/newsletter { email } → { ok, status: "ok" | "exists" } */
@@ -34,7 +36,7 @@ export async function POST(req: NextRequest) {
   }
 
   const email = parsed.data.email.toLowerCase();
-  const result = await subscribeNewsletter(email, "footer", parsed.data.consent === true);
+  const result = await subscribeNewsletter(email, parsed.data.source ?? "footer", parsed.data.consent === true);
   if (result === "error") {
     return NextResponse.json({ ok: false, error: "No se pudo completar." }, { status: 502 });
   }

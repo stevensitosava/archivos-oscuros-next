@@ -10,9 +10,10 @@ import AuthControls from "./AuthControls";
 import { useCart } from "../store/cart";
 
 // Public links only — "Biblioteca" is gated behind sign-in (see AuthControls).
-const LINKS = [
+// "Libro gratis" carries an ember dot: it's the primary ask for first-timers.
+const LINKS: { to: string; label: string; accent?: boolean }[] = [
   { to: "/catalogo", label: "Catálogo" },
-  { to: "/gratis", label: "Gratis" },
+  { to: "/gratis", label: "Libro gratis", accent: true },
 ];
 
 export default function Nav() {
@@ -92,10 +93,11 @@ export default function Nav() {
               <Link
                 key={l.to}
                 href={l.to}
-                className={`text-[0.72rem] font-light uppercase tracking-[0.2em] transition-colors duration-300 hover:text-white ${
+                className={`inline-flex items-center gap-1.5 text-[0.72rem] font-light uppercase tracking-[0.2em] transition-colors duration-300 hover:text-white ${
                   isActive ? "text-white" : "text-white/70"
                 }`}
               >
+                {l.accent && <span className="h-1.5 w-1.5 rounded-full bg-ember-500" aria-hidden="true" />}
                 {l.label}
               </Link>
             );
