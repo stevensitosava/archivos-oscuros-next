@@ -92,10 +92,13 @@ export default function SamplePreview({ book, pages }: { book: Book; pages: numb
 
   return (
     <>
+      {/* Ember (the site's only true color pop) — this is the discovery entry
+          point for cold visitors, it must not blend into the white buy pills.
+          py-2/-my-1 pads the touch target without shifting the layout. */}
       <button
         type="button"
         onClick={show}
-        className="mt-4 inline-flex items-center gap-2 text-[0.78rem] uppercase tracking-[0.16em] text-gold-400/90 transition-colors hover:text-gold-300"
+        className="mt-4 inline-flex items-center gap-2 py-2 -my-1 text-[0.78rem] uppercase tracking-[0.16em] text-ember-300 transition-colors hover:text-ember-400"
         style={{ fontFamily: "var(--font-ritual)" }}
       >
         <BookOpen size={15} strokeWidth={1.6} aria-hidden="true" />
