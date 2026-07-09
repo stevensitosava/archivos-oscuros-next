@@ -88,6 +88,20 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  async redirects() {
+    return [
+      // The stable production alias serves a full duplicate of the site.
+      // Canonicals already point home, but a 308 removes the duplicate host
+      // outright. Exact-host match only — deployment-specific preview URLs
+      // (archivos-oscuros-next-<hash>…vercel.app) stay reachable for QA.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "archivos-oscuros-next.vercel.app" }],
+        destination: "https://www.archivososcuros.com/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
