@@ -28,6 +28,30 @@ export default function Footer() {
             Librería digital de estoicismo, historia y filosofía de guerreros.
             Cada volumen es un archivo descargable al instante — para forjar el carácter.
           </p>
+          <a
+            href="https://www.instagram.com/archivos.oscuros67"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Síguenos en Instagram (@archivos.oscuros67)"
+            className="mt-6 inline-flex items-center gap-2 text-[0.95rem] text-bone-200/75 transition-colors hover:text-gold-300"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="2" y="2" width="20" height="20" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+            </svg>
+            @archivos.oscuros67
+          </a>
         </div>
 
         <nav aria-label="Categorías">

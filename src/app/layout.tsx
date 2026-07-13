@@ -76,6 +76,7 @@ const JSON_LD = {
       description:
         "Librería digital en español de ebooks sobre estoicismo, historia militar y los códigos de los grandes guerreros.",
       slogan: "Sabiduría dura para forjar el carácter.",
+      sameAs: ["https://www.instagram.com/archivos.oscuros67"],
       inLanguage: "es",
       areaServed: "Worldwide",
       knowsAbout: [
