@@ -75,6 +75,7 @@ export default function Footer() {
           <ul className="space-y-2.5">
             <li><Link href="/catalogo" className="text-[0.95rem] text-bone-200/75 hover:text-gold-300">Catálogo completo</Link></li>
             <li><Link href="/gratis" className="text-[0.95rem] text-bone-200/75 hover:text-gold-300">Libros gratis</Link></li>
+            <li><Link href="/guias" className="text-[0.95rem] text-bone-200/75 hover:text-gold-300">Guías</Link></li>
             <li><Link href="/biblioteca" className="text-[0.95rem] text-bone-200/75 hover:text-gold-300">Mi Biblioteca</Link></li>
             <li><Link href="/carrito" className="text-[0.95rem] text-bone-200/75 hover:text-gold-300">Carrito</Link></li>
             <li><Link href="/acceso" className="text-[0.95rem] text-bone-200/75 hover:text-gold-300">Acceso</Link></li>
